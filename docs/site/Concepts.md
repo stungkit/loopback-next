@@ -6,7 +6,9 @@ sidebar: lb4_sidebar
 permalink: /doc/en/lb4/Concepts.html
 ---
 
-LoopBack 4 introduces some new concepts that are important to understand:
+LoopBack 4 introduces some new concepts that are important to understand.
+
+![Key concepts overview diagram](imgs/key-concepts-overview-diagram.png)
 
 - [**Application**](Application.md): The central class for setting up all of
   your module’s components, controllers, servers and bindings. The Application
