@@ -8,12 +8,14 @@ import {
   DefaultCrudRepository,
   findByForeignKeys,
   HasManyDefinition,
+  includeRelatedModels,
   juggler,
   ModelDefinition,
   RelationType,
 } from '../../..';
 import {model, property} from '../../../decorators';
 import {Entity} from '../../../model';
+import {belongsTo} from '../../../relations/belongs-to/belongs-to.decorator';
 
 describe('findByForeignKeys', () => {
   let productRepo: ProductRepository;
@@ -130,11 +132,24 @@ describe('includeRelatedModels', () => {
   let productRepo: ProductRepository;
 
   before(() => {
-    productRepo = new ProductRepository(testdb);
+    beforeEach(givenStubbedCustomerRepo);
+    //productRepo = new ProductRepository(testdb);
   });
 
   beforeEach(async () => {
     await productRepo.deleteAll();
+  });
+  /**========= unreliable ========== */
+  it('throws error if the target repository does not has relations that included in the passed in filter', async () => {
+    let errorMessage;
+    try {
+      //const relationMeta = givenHasManyDefinition();
+      await productRepo.create({id: 1, name: 'product', categoryId: 1});
+      await includeRelatedModels(productRepo, [], {include: belongsTo});
+    } catch (error) {
+      errorMessage = error.message;
+    }
+    expect(errorMessage).to.eql('INVALID_INCLUSION_FILTER');
   });
 
   it('returns an empty array when no foreign keys are passed in', async () => {
@@ -186,18 +201,6 @@ describe('includeRelatedModels', () => {
     expect(products).to.not.containDeep(pencils);
   });
 
-  it('throws error if scope is passed in and is non-empty', async () => {
-    let errorMessage;
-    try {
-      await findByForeignKeys(productRepo, 'categoryId', [1], {
-        limit: 1,
-      });
-    } catch (error) {
-      errorMessage = error.message;
-    }
-    expect(errorMessage).to.eql('scope is not supported');
-  });
-
   it('does not throw an error if scope is passed in and is undefined or empty', async () => {
     let products = await findByForeignKeys(
       productRepo,
@@ -210,6 +213,8 @@ describe('includeRelatedModels', () => {
     products = await findByForeignKeys(productRepo, 'categoryId', 1, {}, {});
     expect(products).to.be.empty();
   });
+  /**========= unreliable ========== */
+
   /******************* HELPERS *******************/
 
   @model()
