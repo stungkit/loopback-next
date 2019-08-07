@@ -60,6 +60,16 @@ export async function findByForeignKeys<
 
 type StringKeyOf<T> = Extract<keyof T, string>;
 
+/**
+ * Finds model instances that contain any of the provided foreign key values.
+ *
+ * @param targetRepository - The target repository where the model instances are found
+ * @param fkName - Name of the foreign key
+ * @param fkValues - One value or array of values of the foreign key to be included
+ * @param scope - Additional scope constraints (not currently supported)
+ * @param options - Options for the operations
+ */
+
 export async function includeRelatedModels<
   T extends Entity,
   Relations extends object = {}
@@ -101,11 +111,11 @@ export async function includeRelatedModels<
 
   return result;
 }
-
-export function isInclusionAllowed<
-  T extends Entity,
-  Relations extends object = {}
->(
+/**
+ * Chcks if the relation is included in the inclusionResolver of the repository
+ *
+ */
+function isInclusionAllowed<T extends Entity, Relations extends object = {}>(
   repo: DefaultCrudRepository<T, unknown, Relations>,
   inclusion: Inclusion,
 ): boolean {
