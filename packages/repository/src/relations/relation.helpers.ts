@@ -3,6 +3,7 @@
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
+import * as debugFactory from 'debug';
 import * as _ from 'lodash';
 import {
   AnyObject,
@@ -14,6 +15,7 @@ import {
   Where,
 } from '..';
 import {DefaultCrudRepository} from '../repositories';
+const debug = debugFactory('loopback:repository:relation-helpers');
 
 /**
  * Finds model instances that contain any of the provided foreign key values.
@@ -109,11 +111,11 @@ export function isInclusionAllowed<
 ): boolean {
   const relationName = inclusion.relation;
   if (!relationName) {
-    //debug('isInclusionAllowed for %j? No: missing relation name', inclusion);
+    debug('isInclusionAllowed for %j? No: missing relation name', inclusion);
     return false;
   }
 
   const allowed = repo.inclusionResolvers.has(relationName);
-  //debug('isInclusionAllowed for %j (relation %s)? %s', inclusion, allowed);
+  debug('isInclusionAllowed for %j (relation %s)? %s', inclusion, allowed);
   return allowed;
 }
