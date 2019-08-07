@@ -4,7 +4,17 @@
 // License text available at https://opensource.org/licenses/MIT
 
 import * as _ from 'lodash';
-import {Entity, EntityCrudRepository, Filter, Options, Where} from '..';
+import {
+  AnyObject,
+  Entity,
+  EntityCrudRepository,
+  Filter,
+  Inclusion,
+  Options,
+  Where,
+} from '..';
+import {DefaultCrudRepository} from '../repositories';
+
 /**
  * Finds model instances that contain any of the provided foreign key values.
  *
@@ -48,7 +58,11 @@ export async function findByForeignKeys<
 
 type StringKeyOf<T> = Extract<keyof T, string>;
 
-export async function includeRelatedModels<T, Relations, AnyObject>(
+export async function includeRelatedModels<
+  T extends Entity,
+  Relations extends object = {}
+>(
+  repo: DefaultCrudRepository<T, unknown, Relations>,
   entities: T[],
   filter?: Filter<T>,
   options?: Options,
@@ -58,7 +72,7 @@ export async function includeRelatedModels<T, Relations, AnyObject>(
   const include = filter && filter.include;
   if (!include) return result;
 
-  const invalidInclusions = include.filter(i => !isInclusionAllowed(i));
+  const invalidInclusions = include.filter(i => !isInclusionAllowed(repo, i));
   if (invalidInclusions.length) {
     const msg =
       'Invalid "filter.include" entries: ' +
@@ -72,7 +86,7 @@ export async function includeRelatedModels<T, Relations, AnyObject>(
 
   const resolveTasks = include.map(async i => {
     const relationName = i.relation!;
-    const resolver = this.inclusionResolvers.get(relationName)!;
+    const resolver = repo.inclusionResolvers.get(relationName)!;
     const targets = await resolver(entities, i, options);
 
     for (const ix in result) {
@@ -86,14 +100,20 @@ export async function includeRelatedModels<T, Relations, AnyObject>(
   return result;
 }
 
-export function isInclusionAllowed<Inclusion>(inclusion: Inclusion): boolean {
+export function isInclusionAllowed<
+  T extends Entity,
+  Relations extends object = {}
+>(
+  repo: DefaultCrudRepository<T, unknown, Relations>,
+  inclusion: Inclusion,
+): boolean {
   const relationName = inclusion.relation;
   if (!relationName) {
     //debug('isInclusionAllowed for %j? No: missing relation name', inclusion);
     return false;
   }
 
-  const allowed = inclusionResolvers.has(relationName);
+  const allowed = repo.inclusionResolvers.has(relationName);
   //debug('isInclusionAllowed for %j (relation %s)? %s', inclusion, allowed);
   return allowed;
 }

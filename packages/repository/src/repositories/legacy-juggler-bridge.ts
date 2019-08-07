@@ -28,6 +28,7 @@ import {
   HasManyRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
+  InclusionResolver,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -99,6 +100,8 @@ export class DefaultCrudRepository<
   Relations extends object = {}
 > implements EntityCrudRepository<T, ID, Relations> {
   modelClass: juggler.PersistedModelClass;
+
+  public inclusionResolvers: Map<string, InclusionResolver>;
 
   /**
    * Constructor of DefaultCrudRepository
