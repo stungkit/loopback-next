@@ -5,7 +5,6 @@
 
 import * as _ from 'lodash';
 import {Entity, EntityCrudRepository, Filter, Options, Where} from '..';
-
 /**
  * Finds model instances that contain any of the provided foreign key values.
  *
@@ -48,3 +47,53 @@ export async function findByForeignKeys<
 }
 
 type StringKeyOf<T> = Extract<keyof T, string>;
+
+export async function includeRelatedModels<T, Relations, AnyObject>(
+  entities: T[],
+  filter?: Filter<T>,
+  options?: Options,
+): Promise<(T & Relations)[]> {
+  const result = entities as (T & Relations)[];
+
+  const include = filter && filter.include;
+  if (!include) return result;
+
+  const invalidInclusions = include.filter(i => !isInclusionAllowed(i));
+  if (invalidInclusions.length) {
+    const msg =
+      'Invalid "filter.include" entries: ' +
+      invalidInclusions.map(i => JSON.stringify(i)).join('; ');
+    const err = new Error(msg);
+    Object.assign(err, {
+      code: 'INVALID_INCLUSION_FILTER',
+    });
+    throw err;
+  }
+
+  const resolveTasks = include.map(async i => {
+    const relationName = i.relation!;
+    const resolver = this.inclusionResolvers.get(relationName)!;
+    const targets = await resolver(entities, i, options);
+
+    for (const ix in result) {
+      const src = result[ix];
+      (src as AnyObject)[relationName] = targets[ix];
+    }
+  });
+
+  await Promise.all(resolveTasks);
+
+  return result;
+}
+
+export function isInclusionAllowed<Inclusion>(inclusion: Inclusion): boolean {
+  const relationName = inclusion.relation;
+  if (!relationName) {
+    //debug('isInclusionAllowed for %j? No: missing relation name', inclusion);
+    return false;
+  }
+
+  const allowed = inclusionResolvers.has(relationName);
+  //debug('isInclusionAllowed for %j (relation %s)? %s', inclusion, allowed);
+  return allowed;
+}
