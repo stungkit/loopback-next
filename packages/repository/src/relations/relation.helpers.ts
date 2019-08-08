@@ -79,8 +79,9 @@ export async function includeRelatedModels<
   filter?: Filter<T>,
   options?: Options,
 ): Promise<(T & Relations)[]> {
+  // 'as ..' keeps tsc happy
   const result = entities as (T & Relations)[];
-
+  // include is the field user passes in filter in request body
   const include = filter && filter.include;
   if (!include) return result;
 
@@ -98,7 +99,9 @@ export async function includeRelatedModels<
 
   const resolveTasks = include.map(async i => {
     const relationName = i.relation!;
+    // get the resolver of this repo
     const resolver = repo.inclusionResolvers.get(relationName)!;
+    // (source entities, inclusion requested by the user, other options)
     const targets = await resolver(entities, i, options);
 
     for (const ix in result) {
