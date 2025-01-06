@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-passport-login
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -87,7 +87,7 @@ export class BasicStrategy implements AuthenticationStrategy {
         include: ['profiles', 'credentials'],
       })
       .then((users: User[]) => {
-        if (!users || !users.length) {
+        if (!users?.length) {
           return done(null, false);
         }
         const user = users[0];

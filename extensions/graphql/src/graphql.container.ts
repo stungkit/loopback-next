@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/graphql
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -12,9 +12,9 @@ import {
   filterByKey,
   filterByServiceInterface,
 } from '@loopback/core';
-import {ExpressContext} from 'apollo-server-express/dist/ApolloServer';
-import debugFactory from 'debug';
+import {ExpressContext} from 'apollo-server-express';
 import {ContainerType, ResolverData} from 'type-graphql';
+import debugFactory from 'debug';
 import {GraphQLBindings, GraphQLTags} from './keys';
 
 const debug = debugFactory('loopback:graphql:container');

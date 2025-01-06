@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -128,7 +128,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
     this.option('foreignKeyName', {
       type: String,
       required: false,
-      description: g.f('Destination model foreign key name'),
+      description: g.f(
+        'Destination model foreign key name (optional, provide only when there is a custom foreign key)',
+      ),
     });
 
     this.option('relationName', {
@@ -612,6 +614,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
   }
 
   async _promptKeyFromOnThroughModel() {
+    if (this.options.sourceKeyOnThrough) {
+      this.artifactInfo.sourceKeyOnThrough = this.options.sourceKeyOnThrough;
+    }
     if (this.shouldExit()) return false;
     return this.prompt([
       {
@@ -623,7 +628,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           )} to define on the through model`,
         ),
         default: this.artifactInfo.defaultSourceKeyOnThrough,
-        when: !this.options.sourceKeyOnThrough,
+        when: !this.artifactInfo.sourceKeyOnThrough,
         validate: utils.validateKeyName,
       },
     ]).then(props => {
@@ -635,6 +640,9 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   async _promptKeyToOnThroughModel() {
     if (this.shouldExit()) return false;
+    if (this.options.targetKeyOnThrough) {
+      this.artifactInfo.targetKeyOnThrough = this.options.targetKeyOnThrough;
+    }
     return this.prompt([
       {
         type: 'string',
@@ -645,7 +653,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           )} to define on the through model`,
         ),
         default: this.artifactInfo.defaultTargetKeyOnThrough,
-        when: !this.options.targetKeyOnThrough,
+        when: !this.artifactInfo.targetKeyOnThrough,
         validate: input =>
           utils.validateKeyToKeyFrom(
             input,
@@ -728,6 +736,8 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
 
   async promptRegisterInclusionResolver() {
     if (this.shouldExit()) return false;
+    this.artifactInfo.registerInclusionResolver =
+      this.options.registerInclusionResolver;
     const props = await this.prompt([
       {
         type: 'confirm',
@@ -737,6 +747,7 @@ module.exports = class RelationGenerator extends ArtifactGenerator {
           chalk.yellow(this.artifactInfo.sourceModel),
           chalk.yellow(this.artifactInfo.destinationModel),
         ),
+        when: this.artifactInfo.registerInclusionResolver === undefined,
         default: true,
       },
     ]);

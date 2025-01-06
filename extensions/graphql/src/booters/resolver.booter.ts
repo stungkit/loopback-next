@@ -1,14 +1,8 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/graphql
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {
-  ArtifactOptions,
-  BaseArtifactBooter,
-  BootBindings,
-  booter,
-} from '@loopback/boot';
 import {
   Application,
   config,
@@ -16,9 +10,15 @@ import {
   CoreBindings,
   inject,
 } from '@loopback/core';
-import debugFactory from 'debug';
+import {
+  ArtifactOptions,
+  BaseArtifactBooter,
+  BootBindings,
+  booter,
+} from '@loopback/boot';
+import {getMetadataStorage} from 'type-graphql';
 import {ResolverClassMetadata} from 'type-graphql/dist/metadata/definitions';
-import {getMetadataStorage} from 'type-graphql/dist/metadata/getMetadataStorage';
+import debugFactory from 'debug';
 import {registerResolver} from '../graphql.server';
 
 const debug = debugFactory('loopback:graphql:resolver-booter');

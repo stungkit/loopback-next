@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -13,9 +13,8 @@ import {ValueOrPromise} from './value-promise';
  * Create the Promise type for `T`. If `T` extends `Promise`, the type is `T`,
  * otherwise the type is `ValueOrPromise<T>`.
  */
-export type AsValueOrPromise<T> = T extends Promise<unknown>
-  ? T
-  : ValueOrPromise<T>;
+export type AsValueOrPromise<T> =
+  T extends Promise<unknown> ? T : ValueOrPromise<T>;
 
 /**
  * The intercepted variant of a function to return `ValueOrPromise<T>`.

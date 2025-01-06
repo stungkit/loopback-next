@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/core
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -10,6 +10,7 @@ import {
   BindingTag,
   Context,
   ContextTags,
+  getBindingMetadata,
   inject,
   injectable,
   Interceptor,
@@ -380,6 +381,25 @@ describe('Application', () => {
       expect(binding.tagMap.date).to.eql('now');
       expect(binding.key).to.equal('services.my-service');
       expect(findKeysByTag(app, 'service')).to.containEql(binding.key);
+    });
+
+    it('binds subclasses of a service without mutating base class', () => {
+      @injectable({scope: BindingScope.SINGLETON})
+      class BaseService {}
+
+      class SubService extends BaseService {}
+
+      const templates = getBindingMetadata(BaseService)?.templates;
+
+      app.service(BaseService, {
+        defaultScope: BindingScope.SINGLETON,
+      });
+      app.service(SubService, {
+        defaultScope: BindingScope.SINGLETON,
+      });
+      expect(getBindingMetadata(BaseService)?.templates?.length).to.equal(
+        templates?.length,
+      );
     });
   });
 

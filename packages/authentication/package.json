@@ -1,7 +1,7 @@
 {
   "name": "@loopback/authentication",
   "description": "A LoopBack component for authentication support.",
-  "version": "8.1.2",
+  "version": "11.0.9",
   "keywords": [
     "LoopBack",
     "Authentication"
@@ -9,15 +9,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "packages/authentication"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -39,24 +39,24 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/core": "^3.1.2",
-    "@loopback/rest": "^11.1.2"
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "@loopback/security": "^0.7.2",
-    "@types/express": "^4.17.13",
-    "@types/lodash": "^4.14.181",
+    "@loopback/security": "^0.11.9",
+    "@types/express": "^4.17.21",
+    "@types/lodash": "^4.17.14",
     "lodash": "^4.17.21",
-    "tslib": "^2.3.1"
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/openapi-spec-builder": "^4.1.2",
-    "@loopback/rest": "^11.1.2",
-    "@loopback/testlab": "^4.1.2",
-    "@types/node": "^12.20.47",
-    "jsonwebtoken": "^8.5.1"
+    "@loopback/build": "^11.0.8",
+    "@loopback/core": "^6.1.6",
+    "@loopback/eslint-config": "^15.0.4",
+    "@loopback/openapi-spec-builder": "^7.0.8",
+    "@loopback/rest": "^14.0.9",
+    "@loopback/testlab": "^7.0.8",
+    "@types/node": "^16.18.123",
+    "jsonwebtoken": "^9.0.2"
   }
 }

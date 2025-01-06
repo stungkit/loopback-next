@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -313,7 +313,7 @@ describe('controller spec', () => {
         $ref: '#/components/schemas/Todo',
       });
 
-      const globalSchemas = (spec.components ?? {}).schemas;
+      const globalSchemas = spec.components?.schemas;
       expect(globalSchemas).to.deepEqual({
         Todo: {
           title: 'Todo',
@@ -362,7 +362,7 @@ describe('controller spec', () => {
         $ref: '#/definitions/Todo',
       });
 
-      const globalSchemas = (spec.components ?? {}).schemas;
+      const globalSchemas = spec.components?.schemas;
       expect(globalSchemas).to.deepEqual({
         Todo: {
           title: 'Todo',
@@ -462,7 +462,7 @@ describe('controller spec', () => {
       }
 
       const spec = getControllerSpec(MyController);
-      const globalSchemas = (spec.components ?? {}).schemas;
+      const globalSchemas = spec.components?.schemas;
       expect(globalSchemas).to.be.undefined();
     });
 
@@ -533,7 +533,7 @@ describe('controller spec', () => {
         },
       });
 
-      const globalSchemas = (spec.components ?? {}).schemas;
+      const globalSchemas = spec.components?.schemas;
       expect(globalSchemas).to.deepEqual({
         Todo: {
           title: 'Todo',
@@ -593,7 +593,7 @@ describe('controller spec', () => {
         $ref: '#/components/schemas/Todo',
       });
 
-      const globalSchemas = (spec.components ?? {}).schemas;
+      const globalSchemas = spec.components?.schemas;
       expect(globalSchemas).to.deepEqual({
         Todo: {
           title: 'Todo',
@@ -861,7 +861,7 @@ describe('controller spec', () => {
         $ref: '#/components/schemas/MyModel',
       });
 
-      const globalSchemas = (spec.components ?? {}).schemas;
+      const globalSchemas = spec.components?.schemas;
       expect(globalSchemas).to.deepEqual({
         MyModel: {
           title: 'MyModel',

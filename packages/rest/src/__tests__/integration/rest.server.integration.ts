@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -17,6 +17,7 @@ import {
   expect,
   givenHttpServerConfig,
   httpsGetAsync,
+  skipIf,
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
@@ -788,22 +789,27 @@ paths:
     expect(res.statusCode).to.equal(200);
   });
 
-  it('supports HTTPS protocol with a pfx file', async () => {
-    const pfxPath = path.join(FIXTURES, 'pfx.pfx');
-    const serverOptions = givenHttpServerConfig({
-      port: 0,
-      protocol: 'https' as const,
-      pfx: fs.readFileSync(pfxPath),
-      passphrase: 'loopback4',
-    });
-    const server = await givenAServer({rest: serverOptions});
-    server.handler(dummyRequestHandler);
-    await server.start();
-    const serverUrl = server.getSync(RestBindings.URL);
-    const res = await httpsGetAsync(serverUrl);
-    expect(res.statusCode).to.equal(200);
-    await server.stop();
-  });
+  skipIf(
+    parseInt(process.versions.node.split('.')[0]) > 16,
+    it,
+    'supports HTTPS protocol with a pfx file',
+    async () => {
+      const pfxPath = path.join(FIXTURES, 'pfx.pfx');
+      const serverOptions = givenHttpServerConfig({
+        port: 0,
+        protocol: 'https' as const,
+        pfx: fs.readFileSync(pfxPath),
+        passphrase: 'loopback4',
+      });
+      const server = await givenAServer({rest: serverOptions});
+      server.handler(dummyRequestHandler);
+      await server.start();
+      const serverUrl = server.getSync(RestBindings.URL);
+      const res = await httpsGetAsync(serverUrl);
+      expect(res.statusCode).to.equal(200);
+      await server.stop();
+    },
+  );
 
   skipOnTravis(it, 'handles IPv6 loopback address in HTTPS', async () => {
     const keyPath = path.join(FIXTURES, 'key.pem');
@@ -1344,13 +1350,12 @@ paths:
     const server = await givenAServer();
     server.controller(MyController);
     const client = createClientForHandler(server.requestHandler);
-    const requests: Promise<unknown>[] = [];
-    for (let i = 0; i < 10; i++) {
-      requests.push(
+    const requests: Promise<unknown>[] = Array(10)
+      .fill([
         client.get('/hello').expect(200, 'hello'),
         client.get('/greet').expect(200, 'greet'),
-      );
-    }
+      ])
+      .flat();
     await Promise.all(requests);
   });
 

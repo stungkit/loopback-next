@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -50,6 +50,30 @@ const disableCamelCaseOptions = {
 const missingDataSourceOptions = {
   dataSource: 'foo',
 };
+const optionalIdOptions = {
+  ...baseOptions,
+  optionalId: true,
+};
+const treatTINYINT1AsTinyIntOptions = {
+  ...baseOptions,
+  treatTINYINT1AsTinyInt: false,
+};
+
+const relationsSetTrue = {
+  ...baseOptions,
+  relations: true,
+};
+const specificModelsOptions = {
+  models: 'Test',
+  dataSource: 'mem',
+  views: false,
+  disableCamelCase: true,
+};
+
+const baseOptionsWithSmallS = {
+  all: true,
+  datasource: 'mem',
+};
 
 // Expected File Name
 const defaultExpectedTestModel = path.join(
@@ -67,6 +91,10 @@ const defaultExpectedViewModel = path.join(
 const defaultExpectedNamingModel = path.join(
   sandbox.path,
   'src/models/naming.model.ts',
+);
+const appointmentModel = path.join(
+  sandbox.path,
+  'src/models/appointment.model.ts',
 );
 
 const defaultExpectedIndexFile = path.join(sandbox.path, 'src/models/index.ts');
@@ -155,5 +183,74 @@ describe('lb4 discover integration', () => {
           .withOptions(missingDataSourceOptions),
       ).to.be.rejectedWith(/Cannot find datasource/);
     });
+
+    it('does not mark id property as required based on optionalId option', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(optionalIdOptions);
+
+      assert.file(defaultExpectedTestModel);
+      expectFileToMatchSnapshot(defaultExpectedTestModel);
+    });
+
+    it('treatTINYINT1AsTinyInt set to false to treat tinyint(1) as boolean', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(treatTINYINT1AsTinyIntOptions);
+
+      assert.file(defaultExpectedTestModel);
+      expectFileToMatchSnapshot(defaultExpectedTestModel);
+    });
+    it('generate relations with --relations', async () => {
+      await testUtils
+        .executeGenerator(generator)
+        .inDir(sandbox.path, () =>
+          testUtils.givenLBProject(sandbox.path, {
+            additionalFiles: SANDBOX_FILES,
+          }),
+        )
+        .withOptions(relationsSetTrue);
+      assert.file(appointmentModel);
+      expectFileToMatchSnapshot(appointmentModel);
+    });
+  });
+  it('generates specific models without prompts using --models', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions(specificModelsOptions);
+
+    basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+    assert.file(defaultExpectedTestModel);
+  });
+
+  it('generates all models without prompts using --all --datasource', /** @this {Mocha.Context} */ async function () {
+    this.timeout(10000);
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () =>
+        testUtils.givenLBProject(sandbox.path, {
+          additionalFiles: SANDBOX_FILES,
+        }),
+      )
+      .withOptions(baseOptionsWithSmallS);
+
+    basicModelFileChecks(defaultExpectedTestModel, defaultExpectedIndexFile);
+    expectFileToMatchSnapshot(defaultExpectedSchemaModel);
+    expectFileToMatchSnapshot(defaultExpectedViewModel);
   });
 });

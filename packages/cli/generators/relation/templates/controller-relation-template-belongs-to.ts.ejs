@@ -6,8 +6,8 @@ import {
   get,
   getModelSchemaRef,
 } from '@loopback/rest';
-import {
-  <%= sourceModelClassName %>,
+import {<%if (sourceModelClassName != targetModelClassName) { %>
+  <%= sourceModelClassName %>,<% } %>
   <%= targetModelClassName %>,
 } from '../models';
 import {<%= sourceRepositoryClassName %>} from '../repositories';
@@ -24,7 +24,7 @@ export class <%= controllerClassName %> {
         description: '<%= targetModelClassName %> belonging to <%= sourceModelClassName %>',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(<%= targetModelClassName %>)},
+            schema: getModelSchemaRef(<%= targetModelClassName %>),
           },
         },
       },

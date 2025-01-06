@@ -1,9 +1,8 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import {cloneDeep} from 'lodash';
 import {
   constrainDataObject,
   constrainFilter,
@@ -218,9 +217,8 @@ export class DefaultHasManyThroughRepository<
       }
     }
 
-    const targetRepository = await this.getTargetRepositoryDict[
-      targetPolymorphicTypeName
-    ]();
+    const targetRepository =
+      await this.getTargetRepositoryDict[targetPolymorphicTypeName]();
     const targetInstance = await targetRepository.create(
       targetModelData,
       options,
@@ -305,10 +303,10 @@ export class DefaultHasManyThroughRepository<
         throughCategorized[key],
       );
       allTargets = allTargets.concat(
-        await targetRepository.find(
-          constrainFilter(filter, targetConstraint),
-          Object.assign(cloneDeep(options ?? {}), {polymorphicType: key}),
-        ),
+        await targetRepository.find(constrainFilter(filter, targetConstraint), {
+          ...options,
+          polymorphicType: key,
+        }),
       );
     }
 
@@ -397,7 +395,10 @@ export class DefaultHasManyThroughRepository<
             this.getThroughConstraintFromTarget(targetIds);
           const constraints = {...targetConstraint, ...sourceConstraint};
           await throughRepository.deleteAll(
-            constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+            constrainDataObject(
+              {},
+              constraints as DataObject<ThroughEntity>,
+            ) as Where<ThroughEntity>,
             options?.throughOptions,
           );
         }
@@ -410,7 +411,10 @@ export class DefaultHasManyThroughRepository<
         const throughFkConstraint =
           this.getThroughConstraintFromTarget(targetFkValues);
         await throughRepository.deleteAll(
-          constrainWhereOr({}, [sourceConstraint, throughFkConstraint]),
+          constrainWhereOr({}, [
+            sourceConstraint as Where<ThroughEntity>,
+            throughFkConstraint as Where<ThroughEntity>,
+          ]),
         );
       }
       // delete target(s)
@@ -557,7 +561,10 @@ export class DefaultHasManyThroughRepository<
     const targetConstraint = this.getThroughConstraintFromTarget([targetId]);
     const constraints = {...targetConstraint, ...sourceConstraint};
     await throughRepository.deleteAll(
-      constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+      constrainDataObject(
+        {},
+        constraints as DataObject<ThroughEntity>,
+      ) as Where<ThroughEntity>,
       options?.throughOptions,
     );
   }
@@ -578,7 +585,10 @@ export class DefaultHasManyThroughRepository<
       this.getThroughConstraintFromTarget(targetFkValues);
     const constraints = {...targetConstraint, ...sourceConstraint};
     await throughRepository.deleteAll(
-      constrainDataObject({}, constraints as DataObject<ThroughEntity>),
+      constrainDataObject(
+        {},
+        constraints as DataObject<ThroughEntity>,
+      ) as Where<ThroughEntity>,
       options?.throughOptions,
     );
   }

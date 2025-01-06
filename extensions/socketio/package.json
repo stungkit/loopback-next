@@ -1,7 +1,7 @@
 {
   "name": "@loopback/socketio",
   "description": "LoopBack's WebSocket server based on socket.io",
-  "version": "0.5.2",
+  "version": "0.8.9",
   "keywords": [
     "LoopBack",
     "Socket.IO",
@@ -13,15 +13,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "extensions/socketio"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -42,26 +42,26 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/boot": "^4.1.2",
-    "@loopback/core": "^3.1.2"
+    "@loopback/boot": "^7.0.0",
+    "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "@loopback/http-server": "^3.1.2",
-    "@types/cors": "^2.8.12",
-    "@types/lodash": "^4.14.181",
+    "@loopback/http-server": "^6.0.9",
+    "@types/cors": "^2.8.17",
+    "@types/lodash": "^4.17.14",
     "cors": "^2.8.5",
-    "debug": "^4.3.4",
+    "debug": "^4.4.0",
     "lodash": "^4.17.21",
-    "socket.io": "^4.4.1"
+    "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "@loopback/boot": "^4.1.2",
-    "@loopback/build": "^8.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/testlab": "^4.1.2",
-    "@types/debug": "^4.1.7",
+    "@loopback/boot": "^7.0.9",
+    "@loopback/build": "^11.0.8",
+    "@loopback/core": "^6.1.6",
+    "@loopback/eslint-config": "^15.0.4",
+    "@loopback/testlab": "^7.0.8",
+    "@types/debug": "^4.1.12",
     "p-event": "^4.2.0",
-    "socket.io-client": "^4.4.1"
+    "socket.io-client": "^4.8.1"
   }
 }

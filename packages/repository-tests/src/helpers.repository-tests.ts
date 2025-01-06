@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository-tests
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -37,7 +37,7 @@ export function withCrudCtx(
  */
 export const deleteAllModelsInDefaultDataSource = withCrudCtx(ctx => {
   ctx.dataSource.deleteAllModels();
-});
+}) as Mocha.Func;
 
 /**
  * A union type between string and number to use since MongoDB and MySQL use

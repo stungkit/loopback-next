@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/tsdocs
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -12,7 +12,10 @@ export class Pet {
    * @param name - Name of the pet
    * @param kind - Kind of the pet
    */
-  constructor(public readonly name: string, public readonly kind: string) {}
+  constructor(
+    public readonly name: string,
+    public readonly kind: string,
+  ) {}
 
   /**
    * Greet the pet

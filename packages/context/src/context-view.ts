@@ -1,11 +1,10 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
-import debugFactory from 'debug';
 import {EventEmitter} from 'events';
-import {promisify} from 'util';
+import debugFactory from 'debug';
 import {Binding} from './binding';
 import {BindingFilter} from './binding-filter';
 import {BindingComparator} from './binding-sorter';
@@ -21,8 +20,8 @@ import {
   ResolutionSession,
 } from './resolution-session';
 import {isPromiseLike, resolveList, ValueOrPromise} from './value-promise';
+
 const debug = debugFactory('loopback:context:view');
-const nextTick = promisify(process.nextTick);
 
 /**
  * An event emitted by a `ContextView`
@@ -205,7 +204,10 @@ export class ContextView<T = unknown>
         ...this.resolutionOptions,
         ...asResolutionOptions(session),
       };
-      options.session = ResolutionSession.fork(options.session);
+      // https://github.com/loopbackio/loopback-next/issues/9041
+      // We should start with a new session for `view` resolution to avoid
+      // possible circular dependencies
+      options.session = undefined;
       return b.getValue(this.context, options);
     });
     if (isPromiseLike(result)) {
@@ -231,7 +233,9 @@ export class ContextView<T = unknown>
   async values(session?: ResolutionOptionsOrSession): Promise<T[]> {
     debug('Reading values');
     // Wait for the next tick so that context event notification can be emitted
-    await nextTick();
+    await new Promise<void>(resolve => {
+      process.nextTick(() => resolve());
+    });
     if (this._cachedValues == null) {
       return this.resolve(session);
     }

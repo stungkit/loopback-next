@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/http-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -8,6 +8,7 @@ import {
   givenHttpServerConfig,
   httpGetAsync,
   httpsGetAsync,
+  skipIf,
   skipOnTravis,
   supertest,
 } from '@loopback/testlab';
@@ -29,7 +30,7 @@ describe('HttpServer (integration)', () => {
       host: '::1',
     } as HttpOptions);
     await server.start();
-    expect(getAddressFamily(server)).to.equal('IPv6');
+    expect(getAddressFamily(server)).to.equalOneOf(6, 'IPv6');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -225,7 +226,7 @@ describe('HttpServer (integration)', () => {
   it('supports HTTP over IPv4', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '127.0.0.1'});
     await server.start();
-    expect(getAddressFamily(server)).to.equal('IPv4');
+    expect(getAddressFamily(server)).to.equalOneOf(4, 'IPv4');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -233,7 +234,7 @@ describe('HttpServer (integration)', () => {
   skipOnTravis(it, 'supports HTTP over IPv6', async () => {
     server = new HttpServer(dummyRequestHandler, {host: '::1'});
     await server.start();
-    expect(getAddressFamily(server)).to.equal('IPv6');
+    expect(getAddressFamily(server)).to.equalOneOf(6, 'IPv6');
     const response = await httpGetAsync(server.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -246,19 +247,24 @@ describe('HttpServer (integration)', () => {
     expect(response.statusCode).to.equal(200);
   });
 
-  it('supports HTTPS protocol with a pfx file', async () => {
-    const httpsServer: HttpServer = givenHttpsServer({usePfx: true});
-    await httpsServer.start();
-    const response = await httpsGetAsync(httpsServer.url);
-    expect(response.statusCode).to.equal(200);
-  });
+  skipIf(
+    parseInt(process.versions.node.split('.')[0]) > 16,
+    it,
+    'supports HTTPS protocol with a pfx file',
+    async () => {
+      const httpsServer: HttpServer = givenHttpsServer({usePfx: true});
+      await httpsServer.start();
+      const response = await httpsGetAsync(httpsServer.url);
+      expect(response.statusCode).to.equal(200);
+    },
+  );
 
   skipOnTravis(it, 'handles IPv6 loopback address in HTTPS', async () => {
     const httpsServer: HttpServer = givenHttpsServer({
       host: '::1',
     });
     await httpsServer.start();
-    expect(getAddressFamily(httpsServer)).to.equal('IPv6');
+    expect(getAddressFamily(httpsServer)).to.equalOneOf(6, 'IPv6');
     const response = await httpsGetAsync(httpsServer.url);
     expect(response.statusCode).to.equal(200);
   });
@@ -314,7 +320,7 @@ describe('HttpServer (integration)', () => {
   });
 
   function getAddressFamily(httpServer: HttpServer) {
-    if (!httpServer || !httpServer.address) return undefined;
+    if (!httpServer?.address) return undefined;
     if (typeof httpServer.address === 'string') {
       return 'ipc';
     }

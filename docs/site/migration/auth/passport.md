@@ -65,8 +65,8 @@ You can use this example to see how to:
 
 This guide is further divided into two sections:
 
-- [How to migrate Non-OAuth2 strategies like basic, local, etc.](#Non-OAuth2-Strategies)
-- [How to migrate OAuth2 strategies like Facebook, Google, etc.](#OAuth2-Strategies)
+- [How to migrate Non-OAuth2 strategies like basic, local, etc.](#non-oauth2-strategies)
+- [How to migrate OAuth2 strategies like Facebook, Google, etc.](#oauth2-strategies)
 
 In each of these sections the following are explained:
 
@@ -244,10 +244,10 @@ export class UserApplication extends BootMixin(
 
 You can configure the authentication endpoints with the following steps:
 
-- For OAuth2 authorizaton flow, we need authentication endpoints that
+- For OAuth2 authorization flow, we need authentication endpoints that
   participate to get the user validated with an external system.
 - This essentially means the `@authenticate` decorator is used with different
-  sematics compared to the non-OAuth2 section above.
+  semantics compared to the non-OAuth2 section above.
 - Here the controller methods become small parts of the larger OAuth2 dialog.
 - We ideally create a controller with two endpoints decorated with
   `@authenticate(`{passport-strategy-name}`)`

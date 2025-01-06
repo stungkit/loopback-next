@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -106,7 +106,11 @@ module.exports = class BelongsToRelationGenerator extends (
     );
 
     relationUtils.addProperty(sourceClass, modelProperty);
-    const imports = relationUtils.getRequiredImports(targetModel, relationType);
+    const imports = relationUtils.getRequiredImports(
+      targetModel,
+      relationType,
+      sourceModel,
+    );
     relationUtils.addRequiredImports(sourceFile, imports);
 
     sourceClass.formatText();
@@ -147,6 +151,7 @@ module.exports = class BelongsToRelationGenerator extends (
     const importsArray = super._getRepositoryRequiredImports(
       dstModelClassName,
       dstRepositoryClassName,
+      this.artifactInfo.srcModelClass,
     );
     importsArray.push({
       name: 'BelongsToAccessor',

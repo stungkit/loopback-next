@@ -1,39 +1,38 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
 
+const fs = require('node:fs');
+const path = require('node:path');
+const util = require('node:util');
+const stream = require('node:stream');
+const {spawnSync} = require('node:child_process');
+const readline = require('node:readline');
+const _ = require('lodash');
 const chalk = require('chalk');
-const debug = require('../lib/debug')('utils');
-const fs = require('fs');
-const path = require('path');
-const util = require('util');
-const stream = require('stream');
-const {spawnSync} = require('child_process');
-const readline = require('readline');
 const semver = require('semver');
 const regenerate = require('regenerate');
-const _ = require('lodash');
-const pascalCase = require('change-case').pascalCase;
-const lowerCase = require('change-case').lowerCase;
-const promisify = require('util').promisify;
-const toVarName = require('change-case').camelCase;
+const {pascalCase, lowerCase, camelCase: toVarName} = require('change-case');
 const pluralize = require('pluralize');
-const urlSlug = require('url-slug');
+const {convert: urlSlug} = require('url-slug');
 const validate = require('validate-npm-package-name');
-const Conflicter = require('yeoman-generator/lib/util/conflicter');
-const connectors = require('./connectors.json');
-const tsquery = require('./ast-helper');
+const Conflicter = require('yeoman-environment/conflicter');
 const stringifyObject = require('stringify-object');
-const camelCase = _.camelCase;
-const kebabCase = _.kebabCase;
 const untildify = require('untildify');
 const tildify = require('tildify');
-const readdirAsync = promisify(fs.readdir);
+const connectors = require('./connectors.json');
+const tsquery = require('./ast-helper');
+const debugFactory = require('../lib/debug');
+
+const debug = debugFactory('utils');
+const camelCase = _.camelCase;
+const kebabCase = _.kebabCase;
+
 const toFileName = name => {
-  return kebabCase(name).replace(/\-(\d+)$/g, '$1');
+  return kebabCase(name).replace(/-(\d+)$/g, '$1');
 };
 
 const RESERVED_PROPERTY_NAMES = ['constructor'];
@@ -42,7 +41,7 @@ const RESERVED_PROPERTY_NAMES = ['constructor'];
  * Either a reference to util.promisify or its polyfill, depending on
  * your version of Node.
  */
-exports.promisify = promisify;
+exports.promisify = util.promisify;
 
 /**
  * Returns a valid variable name regex;
@@ -97,7 +96,7 @@ exports.validateClassName = function (name) {
   if (name.includes('-')) {
     return util.format('Class name cannot contain hyphens: %s', name);
   }
-  if (name.match(/[\/@\s\+%:]/)) {
+  if (name.match(/[\/@\s+%:]/)) {
     return util.format(
       'Class name cannot contain special characters (/@+%: ): %s',
       name,
@@ -162,7 +161,7 @@ exports.validateKeyName = function (name) {
   if (name.includes('-')) {
     return util.format('Key name cannot contain hyphens: %s', name);
   }
-  if (name.match(/[\/@\s\+%:]/)) {
+  if (name.match(/[\/@\s+%:]/)) {
     return util.format(
       'Key name cannot contain special characters (/@+%: ): %s',
       name,
@@ -198,7 +197,7 @@ exports.validateKeyToKeyFrom = function (input, comparedTo) {
   if (input.includes('-')) {
     return util.format('Key name cannot contain hyphens: %s', input);
   }
-  if (input.match(/[\/@\s\+%:]/)) {
+  if (input.match(/[\/@\s+%:]/)) {
     return util.format(
       'Key name cannot contain special characters (/@+%: ): %s',
       input,
@@ -234,7 +233,7 @@ exports.validateRelationName = function (name, type, foreignKeyName) {
   if (name.includes('-')) {
     return util.format('Relation name cannot contain hyphens: %s', name);
   }
-  if (name.match(/[\/@\s\+%:]/)) {
+  if (name.match(/[\/@\s+%:]/)) {
     return util.format(
       'Relation name cannot contain special characters (/@+%: ): %s',
       name,
@@ -248,7 +247,7 @@ exports.validateRelationName = function (name, type, foreignKeyName) {
  */
 exports.toClassName = function (name) {
   if (name === '') return new Error('no input');
-  if (typeof name != 'string' || name == null) return new Error('bad input');
+  if (typeof name != 'string') return new Error('bad input');
   return pascalCase(camelCase(name));
 };
 
@@ -300,8 +299,8 @@ exports.validateUrlSlug = function (name) {
  * Extends conflicter so that it keeps track of conflict status
  */
 exports.StatusConflicter = class StatusConflicter extends Conflicter {
-  constructor(adapter, force) {
-    super(adapter, force);
+  constructor(adapter, opts) {
+    super(adapter, opts);
     this.generationStatus = {}; // keeps track of file conflict history
   }
 
@@ -329,7 +328,7 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  * filetype.
  * For example, a fileType of "model" will search the target path for matches to
  * "*.model.js"
- * @param {string} path The directory path to search. This search is *not*
+ * @param {string} dir The directory path to search. This search is *not*
  * recursive.
  * @param {string} artifactType The type of the artifact in string form.
  * @param {Function=} reader An optional reader function to retrieve the
@@ -337,7 +336,7 @@ exports.StatusConflicter = class StatusConflicter extends Conflicter {
  * @returns {Promise<string[]>} The filtered list of paths.
  */
 exports.findArtifactPaths = async function (dir, artifactType, reader) {
-  const readdir = reader || readdirAsync;
+  const readdir = reader || fs.promises.readdir;
   debug('Finding %j artifact paths at %s', artifactType, dir);
 
   try {
@@ -520,12 +519,12 @@ exports.validateRequiredName = function (name) {
   if (!name) {
     return 'Name is required';
   }
-  return validateValue(name, /[\/@\s\+%:\.]/);
+  return validateValue(name, /[\/@\s+%:.]/);
 };
 
 function validateValue(name, unallowedCharacters) {
   if (!unallowedCharacters) {
-    unallowedCharacters = /[\/@\s\+%:\.]/;
+    unallowedCharacters = /[\/@\s+%:.]/;
   }
   if (name.match(unallowedCharacters)) {
     return `Name cannot contain special characters ${unallowedCharacters}: ${name}`;
@@ -587,7 +586,7 @@ exports.getInterceptorFileName = function (interceptorName) {
  *
  * Returns the connector property for the datasource file
  * @param {string} datasourcesDir path for sources
- * @param {string} dataSourceClass class name for the datasoure
+ * @param {string} dataSourceClass class name for the datasource
  */
 exports.getDataSourceConnectorName = function (
   datasourcesDir,
@@ -606,7 +605,7 @@ exports.getDataSourceConnectorName = function (
  * connectorType supplied for the given connector name
  * @param {string} connectorType single or a comma separated string array
  * @param {string} datasourcesDir path for sources
- * @param {string} dataSourceClass class name for the datasoure
+ * @param {string} dataSourceClass class name for the datasource
  */
 exports.isConnectorOfType = function (
   connectorType,
@@ -688,7 +687,7 @@ function readDataSourceConfigFromJSON(datasourcesDir, dataSourceClass) {
  *
  * returns the name property inside the datasource json file
  * @param {string} datasourcesDir path for sources
- * @param {string} dataSourceClass class name for the datasoure
+ * @param {string} dataSourceClass class name for the datasource
  */
 exports.getDataSourceName = function (datasourcesDir, dataSourceClass) {
   if (!dataSourceClass) {

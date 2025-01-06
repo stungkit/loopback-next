@@ -3,6 +3,82 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@6.0.0...@loopback/sandbox-example@6.0.1) (2024-05-17)
+
+**Note:** Version bump only for package @loopback/sandbox-example
+
+
+
+
+
+# [6.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@5.0.0...@loopback/sandbox-example@6.0.0) (2024-03-04)
+
+
+### chore
+
+* drop Node.js 16 support ([b9efcb4](https://github.com/loopbackio/loopback-next/commit/b9efcb477d50507ba3c778ba23ea7acba7692593))
+
+
+### BREAKING CHANGES
+
+* Drop Node.js 16 support in all LB4 modules and extensions
+
+Signed-off-by: dhmlau <dhmlau@ca.ibm.com>
+
+
+
+
+
+# [5.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@4.0.2...@loopback/sandbox-example@5.0.0) (2023-05-15)
+
+
+### Features
+
+* add support for node v20 ([e23cefa](https://github.com/loopbackio/loopback-next/commit/e23cefaf5cce3fb990cb09f4c94239d1979615b1))
+* remove support for node v14 ([5425762](https://github.com/loopbackio/loopback-next/commit/5425762f1353869994acf081bcda4816e6a9c3b0))
+* remove support for node v19 ([e26a2ac](https://github.com/loopbackio/loopback-next/commit/e26a2ac2e43245d09dfc9721ccfa41d830daccb8))
+
+
+### BREAKING CHANGES
+
+* End of life of Node v14
+
+Signed-off-by: Francisco Buceta <frbuceta@gmail.com>
+
+
+
+
+
+## [4.0.2](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@4.0.1...@loopback/sandbox-example@4.0.2) (2023-01-09)
+
+**Note:** Version bump only for package @loopback/sandbox-example
+
+
+
+
+
+## [4.0.1](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@4.0.0...@loopback/sandbox-example@4.0.1) (2022-06-13)
+
+**Note:** Version bump only for package @loopback/sandbox-example
+
+
+
+
+
+## [4.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@3.0.0...@loopback/sandbox-example@4.0.0) (2022-05-05)
+
+
+### ⚠ BREAKING CHANGES
+
+* remove node v12 support
+
+### Features
+
+* add support for node v18 ([ccb4c61](https://github.com/loopbackio/loopback-next/commit/ccb4c61307d94ab7bb07a19c547dfc4fa7d388a8))
+* remove node v12 support ([5f66e5b](https://github.com/loopbackio/loopback-next/commit/5f66e5bd288ba806b3aa6550fc29c5009de8b60d))
+
+
+
 # [3.0.0](https://github.com/loopbackio/loopback-next/compare/@loopback/sandbox-example@2.1.1...@loopback/sandbox-example@3.0.0) (2021-11-18)
 
 

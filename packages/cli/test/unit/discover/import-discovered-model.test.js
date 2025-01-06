@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -112,6 +112,27 @@ describe('importDiscoveredModel', () => {
     });
   });
 
+  it('imports Blob properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        image: {
+          type: 'Binary',
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties).to.have.property('image').deepEqual({
+      type: `'Binary'`,
+      tsType: 'Buffer',
+    });
+  });
+
   it('imports numeric primary key', () => {
     const discoveredModel = {
       name: 'TestModel',
@@ -133,6 +154,29 @@ describe('importDiscoveredModel', () => {
       tsType: 'number',
       scale: 0,
       id: 1,
+    });
+  });
+
+  it('imports enum properties', () => {
+    const discoveredModel = {
+      name: 'TestModel',
+      properties: {
+        patient: {
+          type: 'String',
+          jsonSchema: {enum: ['INPATIENT', 'OUTPATIENT']},
+          required: false,
+          length: null,
+          precision: null,
+          scale: null,
+        },
+      },
+    };
+
+    const modelData = importDiscoveredModel(discoveredModel);
+    expect(modelData.properties).to.have.property('patient').deepEqual({
+      jsonSchema: "{enum: ['INPATIENT', 'OUTPATIENT']}",
+      type: `'string'`,
+      tsType: 'string',
     });
   });
 

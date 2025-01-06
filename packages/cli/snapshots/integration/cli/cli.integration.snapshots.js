@@ -749,7 +749,6 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "type": "String",
           "required": false,
           "description": "A valid repository base class",
-          "default": "DefaultCrudRepository",
           "name": "repositoryBaseClass",
           "hide": false
         },
@@ -1302,11 +1301,24 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "name": "dataSource",
           "hide": false
         },
+        "datasource": {
+          "type": "String",
+          "description": "The name of the datasource to discover",
+          "name": "datasource",
+          "hide": false
+        },
         "views": {
           "type": "Boolean",
           "description": "Boolean to discover views",
           "default": true,
           "name": "views",
+          "hide": false
+        },
+        "relations": {
+          "type": "Boolean",
+          "description": "Discover and create relations",
+          "default": false,
+          "name": "relations",
           "hide": false
         },
         "schema": {
@@ -1327,6 +1339,19 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "type": "String",
           "description": "Specify the directory into which the \`model.model.ts\` files will be placed",
           "name": "outDir",
+          "hide": false
+        },
+        "models": {
+          "type": "String",
+          "description": "Discover specific models without prompting users to select e.g:--models=table1,table2",
+          "name": "models",
+          "hide": false
+        },
+        "optionalId": {
+          "type": "Boolean",
+          "description": "Boolean to mark id property as optional field",
+          "default": false,
+          "name": "optionalId",
           "hide": false
         }
       },
@@ -1453,7 +1478,7 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
         "foreignKeyName": {
           "type": "String",
           "required": false,
-          "description": "Destination model foreign key name",
+          "description": "Destination model foreign key name (optional, provide only when there is a custom foreign key)",
           "name": "foreignKeyName",
           "hide": false
         },
@@ -1633,6 +1658,14 @@ exports[`cli saves command metadata to .yo-rc.json 1`] = `
           "required": false,
           "description": "A valid base path",
           "name": "basePath",
+          "hide": false
+        },
+        "readonly": {
+          "type": "Boolean",
+          "required": false,
+          "description": "Create readonly APIs",
+          "default": false,
+          "name": "readonly",
           "hide": false
         },
         "config": {

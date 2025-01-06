@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-passport-login
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -31,7 +31,7 @@ export class PassportUserIdentityService
    * @param token
    */
   async findOrCreateUser(profile: PassportProfile): Promise<User> {
-    if (!profile.emails || !profile.emails.length) {
+    if (!profile?.emails?.length) {
       throw new Error('email-id is required in returned profile to login');
     }
 
@@ -43,7 +43,7 @@ export class PassportUserIdentityService
       },
     });
     let user: User;
-    if (!users || !users.length) {
+    if (!users?.length) {
       const name = profile.name?.givenName
         ? profile.name.givenName + ' ' + profile.name.familyName
         : profile.displayName;

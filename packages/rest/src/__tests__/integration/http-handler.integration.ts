@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -273,6 +273,7 @@ describe('HttpHandler', () => {
     });
 
     it('returns 400 for malformed JSON body', () => {
+      const NODE_MAJOR_VERSION = parseInt(process.versions.node.split('.')[0]);
       logErrorsExcept(400);
       return client
         .post('/show-body')
@@ -280,7 +281,10 @@ describe('HttpHandler', () => {
         .send('malformed-json')
         .expect(400, {
           error: {
-            message: 'Unexpected token m in JSON at position 0',
+            message:
+              NODE_MAJOR_VERSION >= 19
+                ? 'Unexpected token \'m\', "malformed-json" is not valid JSON'
+                : 'Unexpected token m in JSON at position 0',
             name: 'SyntaxError',
             statusCode: 400,
           },

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -348,6 +348,24 @@ function buildMethodSpec(controllerSpec, op, options) {
   };
   if (op.spec['x-implementation']) {
     methodSpec.implementation = op.spec['x-implementation'];
+  }
+  if (!methodSpec.implementation) {
+    const methodParameters = {};
+    methodParameters[methodName] = [];
+    if (parameters) {
+      parameters.forEach(param => {
+        methodParameters[methodName].push(param.name);
+      });
+    }
+    if (op.spec.requestBody) {
+      methodParameters[methodName].push('_requestBody');
+    }
+    controllerSpec.serviceClassNameCamelCase = camelCase(
+      controllerSpec.serviceClassName,
+    );
+    methodSpec.implementation = `return this.${
+      controllerSpec.serviceClassNameCamelCase
+    }.${methodName}(${methodParameters[methodName].join(', ')});`;
   }
   return methodSpec;
 

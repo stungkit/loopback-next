@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,14 +11,12 @@ import {
   SchemaObject,
 } from '@loopback/openapi-v3';
 import {
-  expect,
   ShotRequestOptions,
+  expect,
   stubExpressContext,
 } from '@loopback/testlab';
 import {
-  createResolvedRoute,
   JsonBodyParser,
-  parseOperationArgs,
   PathParameterValues,
   RawBodyParser,
   Request,
@@ -29,6 +27,8 @@ import {
   StreamBodyParser,
   TextBodyParser,
   UrlEncodedBodyParser,
+  createResolvedRoute,
+  parseOperationArgs,
 } from '../..';
 
 describe('operationArgsParser', () => {
@@ -328,6 +328,7 @@ describe('operationArgsParser', () => {
     });
 
     it('rejects malformed JSON string', async () => {
+      const NODE_MAJOR_VERSION = parseInt(process.versions.node.split('.')[0]);
       const req = givenRequest({
         url: '/?value={"malformed-JSON"}',
       });
@@ -340,7 +341,12 @@ describe('operationArgsParser', () => {
       ).to.be.rejectedWith(
         RestHttpErrors.invalidData('{"malformed-JSON"}', 'value', {
           details: {
-            syntaxError: 'Unexpected token } in JSON at position 17',
+            syntaxError:
+              NODE_MAJOR_VERSION >= 19
+                ? NODE_MAJOR_VERSION >= 22
+                  ? "Expected ':' after property name in JSON at position 17 (line 1 column 18)"
+                  : "Expected ':' after property name in JSON at position 17"
+                : 'Unexpected token } in JSON at position 17',
           },
         }),
       );

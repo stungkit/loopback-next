@@ -1,7 +1,7 @@
 {
   "name": "@loopback/example-hello-world",
   "description": "A simple hello-world Application using LoopBack 4",
-  "version": "4.1.2",
+  "version": "7.1.0",
   "keywords": [
     "loopback",
     "LoopBack",
@@ -11,15 +11,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "examples/hello-world"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -46,16 +46,16 @@
     "access": "public"
   },
   "dependencies": {
-    "@loopback/core": "^3.1.2",
-    "@loopback/rest": "^11.1.2",
-    "tslib": "^2.3.1"
+    "@loopback/core": "^6.1.6",
+    "@loopback/rest": "^14.0.9",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/testlab": "^4.1.2",
-    "@types/node": "^12.20.47",
-    "eslint": "^8.10.0",
-    "typescript": "~4.6.3"
+    "@loopback/build": "^11.0.8",
+    "@loopback/eslint-config": "^15.0.4",
+    "@loopback/testlab": "^7.0.8",
+    "@types/node": "^16.18.123",
+    "eslint": "^8.57.1",
+    "typescript": "~5.2.2"
   }
 }

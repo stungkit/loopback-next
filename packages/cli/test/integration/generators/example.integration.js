@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -50,12 +50,19 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
       .withPrompts({name: VALID_EXAMPLE})
       .then(() => {
         const targetPkgFile = 'package.json';
-        const originalPkgMeta = require(`../../../../../examples/${VALID_EXAMPLE}/package.json`);
-        assert.file(targetPkgFile);
-        assert.jsonFileContent(targetPkgFile, {
-          name: originalPkgMeta.name,
-          version: originalPkgMeta.version,
-        });
+        const originalPkgMeta = require(
+          `../../../../../examples/${VALID_EXAMPLE}/package.json`,
+        );
+        assert.file(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+        );
+        assert.jsonFileContent(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+          {
+            name: originalPkgMeta.name,
+            version: originalPkgMeta.version,
+          },
+        );
       });
   });
 
@@ -65,12 +72,19 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
       .withArguments([VALID_EXAMPLE])
       .then(() => {
         const targetPkgFile = 'package.json';
-        const originalPkgMeta = require(`../../../../../examples/${VALID_EXAMPLE}/package.json`);
-        assert.file(targetPkgFile);
-        assert.jsonFileContent(targetPkgFile, {
-          name: originalPkgMeta.name,
-          version: originalPkgMeta.version,
-        });
+        const originalPkgMeta = require(
+          `../../../../../examples/${VALID_EXAMPLE}/package.json`,
+        );
+        assert.file(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+        );
+        assert.jsonFileContent(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, targetPkgFile),
+          {
+            name: originalPkgMeta.name,
+            version: originalPkgMeta.version,
+          },
+        );
       });
   });
 
@@ -102,12 +116,16 @@ describe('lb4 example', /** @this {Mocha.Suite} */ function () {
         delete expectedConfig.references;
         expectedConfig.compilerOptions.composite = false;
 
-        assert.file(tsconfigFile);
+        assert.file(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, tsconfigFile),
+        );
 
         // IMPORTANT! We cannot use `assert.jsonFileContent` here
         // because the helper only checks if the file contains all expected
         // properties, it does not verify there is no additional data.
-        const actualConfig = readJsonSync(tsconfigFile);
+        const actualConfig = readJsonSync(
+          path.join(`loopback4-example-${VALID_EXAMPLE}`, tsconfigFile),
+        );
         expect(actualConfig).to.deepEqual(expectedConfig);
       });
   });

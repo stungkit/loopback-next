@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -21,9 +21,9 @@ const debug = require('debug')('loopback:build');
 const utils = require('./utils');
 const path = require('path');
 const fs = require('fs');
-const glob = require('glob');
+const {globSync} = require('glob');
 const fse = require('fs-extra');
-const buildOptions = require('typescript').buildOpts;
+const {buildOpts: buildOptions} = require('typescript');
 
 function run(argv, options) {
   if (options === true) {
@@ -265,13 +265,13 @@ function copyResources(rootDir, packageDir, tsConfigFile, outDir, options) {
     (tsConfig.compilerOptions && tsConfig.compilerOptions.rootDir) || '';
 
   const pattern = `@(${dirs})/**/!(*.ts)`;
-  const files = glob.sync(pattern, {root: packageDir, nodir: true});
+  const files = globSync(pattern, {root: packageDir, nodir: true});
   for (const file of files) {
     /**
      * Trim path that matches tsConfig.compilerOptions.rootDir
      */
     let targetFile = file;
-    if (compilerRootDir && file.startsWith(compilerRootDir + '/')) {
+    if (compilerRootDir && file.startsWith(path.join(compilerRootDir + '/'))) {
       targetFile = file.substring(compilerRootDir.length + 1);
     }
 

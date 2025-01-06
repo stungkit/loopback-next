@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/boot
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -38,10 +38,9 @@ describe('application metadata booter acceptance tests', () => {
 
     await sandbox.copyFile(resolve(__dirname, '../fixtures/package.json'));
 
-    const MyApp = require(resolve(
-      sandbox.path,
-      'dist/application.js',
-    )).BooterApp;
+    const MyApp = require(
+      resolve(sandbox.path, 'dist/application.js'),
+    ).BooterApp;
 
     app = new MyApp({
       rest: givenHttpServerConfig(),

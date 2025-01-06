@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/metadata
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -635,7 +635,7 @@ export class ParameterDecoratorFactory<T> extends DecoratorFactory<
   create(): ParameterDecorator {
     return (
       target: Object,
-      methodName: string | symbol,
+      methodName: string | symbol | undefined,
       parameterIndex: number,
     ) => this.decorate(target, methodName, parameterIndex);
   }

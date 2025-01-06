@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -7,8 +7,7 @@
 
 const fse = require('fs-extra');
 const _ = require('lodash');
-const {promisify} = require('util');
-const glob = promisify(require('glob'));
+const {glob} = require('glob');
 
 const defaultFS = {
   write: fse.writeFile,
@@ -38,7 +37,7 @@ async function jsOrTsFiles(cwd, paths = []) {
     });
   }
   paths = await Promise.all(globs);
-  paths = _.flatten(paths);
+  paths = _.map(_.flatten(paths), pathString => pathString.replace(/\\/g, '/'));
   return _.filter(paths, /\.(js|ts)$/);
 }
 

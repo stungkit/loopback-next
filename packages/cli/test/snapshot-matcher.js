@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -285,7 +285,7 @@ function loadSnapshotData(snapshotFile) {
 function writeSnapshotData(snapshotFile, snapshots) {
   const writeFileAtomic = require('write-file-atomic');
   const naturalCompare = require('natural-compare');
-  const mkdirp = require('mkdirp');
+  const {mkdirp} = require('mkdirp');
 
   const header = `// IMPORTANT
 // This snapshot file is auto-generated, but designed for humans.

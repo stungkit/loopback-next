@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/booter-lb3app
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -52,7 +52,7 @@ describe('booter-lb3app', () => {
         },
       });
 
-      const schemas = (spec.components ?? {}).schemas ?? {};
+      const schemas = spec.components?.schemas ?? {};
       expect(schemas._new_CoffeeShop)
         .to.have.property('properties')
         .eql({
@@ -68,7 +68,7 @@ describe('booter-lb3app', () => {
 
     it('includes the target model as a property of the source model in a relation', async () => {
       const spec = await app.restServer.getApiSpec();
-      const schemas = (spec.components ?? {}).schemas ?? {};
+      const schemas = spec.components?.schemas ?? {};
 
       expect(schemas.CoffeeShop)
         .to.have.property('properties')

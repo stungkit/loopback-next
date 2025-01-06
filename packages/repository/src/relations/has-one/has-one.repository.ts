@@ -1,11 +1,10 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Getter} from '@loopback/core';
-import {Filter} from '@loopback/filter';
-import {cloneDeep} from 'lodash';
+import {Filter, Where} from '@loopback/filter';
 import {TypeResolver} from '../../';
 import {Count, DataObject, Options} from '../../common-types';
 import {EntityNotFoundError, InvalidPolymorphismError} from '../../errors';
@@ -143,9 +142,8 @@ export class DefaultHasOneRepository<
         throw new InvalidPolymorphismError(polymorphicTypeName);
       }
     }
-    const targetRepository = await this.getTargetRepositoryDict[
-      polymorphicTypeName
-    ]();
+    const targetRepository =
+      await this.getTargetRepositoryDict[polymorphicTypeName]();
     return targetRepository.create(
       constrainDataObject(targetModelData, this.constraint),
       options,
@@ -183,7 +181,7 @@ export class DefaultHasOneRepository<
       const targetRepository = await this.getTargetRepositoryDict[key]();
       const found = await targetRepository.find(
         Object.assign({limit: 1}, constrainFilter(filter, this.constraint)),
-        Object.assign(cloneDeep(options ?? {}), {polymorphicType: key}),
+        {...options, polymorphicType: key},
       );
       if (found.length >= 1) {
         return found[0];
@@ -223,7 +221,7 @@ export class DefaultHasOneRepository<
       total +=
         (
           await targetRepository.deleteAll(
-            constrainWhere({}, this.constraint),
+            constrainWhere({}, this.constraint as Where<TargetEntity>),
             options,
           )
         )?.count ?? 0;
@@ -270,7 +268,7 @@ export class DefaultHasOneRepository<
                 : (dataObject as DataObject<TargetEntity>),
               this.constraint,
             ),
-            constrainWhere({}, this.constraint),
+            constrainWhere({}, this.constraint as Where<TargetEntity>),
             options,
           )
         )?.count ?? 0;

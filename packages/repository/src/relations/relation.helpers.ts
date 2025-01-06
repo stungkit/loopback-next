@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -62,7 +62,7 @@ export async function findByForeignKeys<
     useScopeFilterGlobally = true;
   }
 
-  // This code is to keep backward compatability.
+  // This code is to keep backward compatibility.
   // See https://github.com/loopbackio/loopback-next/issues/6832 for more info.
   if (scope?.totalLimit) {
     scope.limit = scope.totalLimit;
@@ -121,7 +121,6 @@ export async function includeRelatedModels<
   include?: InclusionFilter[],
   options?: Options,
 ): Promise<(T & Relations)[]> {
-  entities = cloneDeep(entities);
   if (options?.polymorphicType) {
     include = include?.filter(inclusionFilter => {
       if (typeof inclusionFilter === 'string') {
@@ -137,6 +136,9 @@ export async function includeRelatedModels<
     });
   } else {
     include = cloneDeep(include);
+  }
+  if (include) {
+    entities = cloneDeep(entities);
   }
   const result = entities as (T & Relations)[];
   if (!include) return result;
@@ -286,7 +288,7 @@ export function flattenMapByKeys<T>(
  * @param keyName - key name of the source
  * @param reducer - a strategy to reduce inputs to single item or array
  */
-export function buildLookupMap<Key, InType, OutType = InType>(
+export function buildLookupMap<Key, InType extends object, OutType = InType>(
   list: InType[],
   keyName: StringKeyOf<InType>,
   reducer: (accumulator: OutType | undefined, current: InType) => OutType,

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/express
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,12 +11,21 @@ import {
 } from '@loopback/core';
 import {Client, givenHttpServerConfig, supertest} from '@loopback/testlab';
 import bodyParser from 'body-parser';
+import {NextFunction, Request, Response} from 'express';
 import {ExpressApplication} from '../../express.application';
 import {ExpressRequestHandler} from '../../types';
 import {SpyAction, SpyConfig} from '../fixtures/spy-config';
-import spyFactory from '../fixtures/spy.middleware';
-export const spy = spyFactory;
+
+export {default as spy} from '../fixtures/spy.middleware';
 export {SpyConfig} from '../fixtures/spy-config';
+
+function runAsyncWrapper(
+  callback: (req: Request, res: Response, next: NextFunction) => Promise<void>,
+): ExpressRequestHandler {
+  return function (req: Request, res: Response, next: NextFunction) {
+    callback(req, res, next).catch(next);
+  };
+}
 
 export type TestFunction = (
   spyBinding: Binding<unknown>,
@@ -62,23 +71,26 @@ export class TestHelper {
       }
     }
     const binding = this.app.controller(MyController);
-    const handler: ExpressRequestHandler = async (req, res, next) => {
-      try {
-        const controller = await this.app.get<MyController>(binding.key);
-        const proxy = createProxyWithInterceptors(
-          controller,
-          this.app.expressServer.getMiddlewareContext(req),
-          undefined,
-          {
-            type: 'route',
-            value: controller,
-          },
-        );
-        res.send(await proxy.hello(req.body));
-      } catch (err) {
-        next(err);
-      }
-    };
+
+    const handler: ExpressRequestHandler = runAsyncWrapper(
+      async (req, res, next) => {
+        try {
+          const controller = await this.app.get<MyController>(binding.key);
+          const proxy = createProxyWithInterceptors(
+            controller,
+            this.app.expressServer.getMiddlewareContext(req),
+            undefined,
+            {
+              type: 'route',
+              value: controller,
+            },
+          );
+          res.send(await proxy.hello(req.body));
+        } catch (err) {
+          next(err);
+        }
+      },
+    );
     this.app.expressServer.expressApp.post('/hello', handler);
     this.app.expressServer.expressApp.post('/greet', handler);
   }

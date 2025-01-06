@@ -1,7 +1,6 @@
 <img src="https://raw.githubusercontent.com/loopbackio/loopback.io/gh-pages/images/branding/logo/blue/loopback-sm.png" alt="LoopBack4 logo" width="400"/>
 
 [![Continuous Integration Status](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml/badge.svg)](https://github.com/loopbackio/loopback-next/actions/workflows/continuous-integration.yml)
-[![AppVeyor Build status](https://ci.appveyor.com/api/projects/status/github/loopbackio/loopback-next?branch=master&svg=true)](https://ci.appveyor.com/project/strongloop/loopback-next-x2uk1)
 [![Coverage Status](https://coveralls.io/repos/github/loopbackio/loopback-next/badge.svg?branch=master)](https://coveralls.io/github/loopbackio/loopback-next?branch=master)
 [![CodeQL Status](https://github.com/loopbackio/loopback-next/workflows/CodeQL/badge.svg)](https://github.com/loopbackio/loopback-next/actions?query=workflow%3ACodeQL)
 
@@ -39,12 +38,9 @@ We don't provide any LTS version for LoopBack 4 yet. Please join the discussion
 in [loopback-next#4398](https://github.com/loopbackio/loopback-next/issues/4398)
 if you are interested in a version that's less frequently changed.
 
-We are providing Maintenance support for
-[LoopBack 3](https://loopback.io/doc/en/lb3/) until December 2020.
-
 | Version    | Status      | Published | EOL                  |
 | ---------- | ----------- | --------- | -------------------- |
-| LoopBack 4 | Current     | Oct 2018  | Apr 2024 _(minimum)_ |
+| LoopBack 4 | Current     | Oct 2018  | Apr 2026 _(minimum)_ |
 | LoopBack 3 | End-of-Life | Dec 2016  | Dec 2020             |
 | LoopBack 2 | End-of-Life | Jul 2014  | Apr 2019             |
 
@@ -56,12 +52,15 @@ for more details.
 
 Make sure you have the following installed:
 
-- [Node.js](https://nodejs.org/en/download/) >= 12
+| Package                                    | Version/-s                                                             | Link                                  | Note                                                                                                  |
+| ------------------------------------------ | ---------------------------------------------------------------------- | ------------------------------------- | ----------------------------------------------------------------------------------------------------- |
+| [Node.js](https://nodejs.org/en/download/) | Maintenance LTS (_v16_) <br/> Active LTS (_v18_) <br/> Current (_v20_) | https://nodejs.org/en/about/releases/ | <span style="color: yellow;">The use of the current version for production is not recommended</span>. |
 
-Install LoopBack 4 CLI to help create new projects as follows:
+You can generate a project with our generator or with the CLI as follows:
 
 ```shell
-npm i -g @loopback/cli
+npm create loopback
+npx -p @loopback/cli lb app
 ```
 
 To create your first LoopBack 4 application, see
@@ -106,19 +105,21 @@ See [SECURITY.md](SECURITY.md) for more details.
 
 ### Technical Steering Committee
 
-|                  Raymond Feng                   |               Diana Lau               |                       Mario Estrada                        |               Rifa Achrinza                |              Francisco Buceta              |
-| :---------------------------------------------: | :-----------------------------------: | :--------------------------------------------------------: | :----------------------------------------: | :----------------------------------------: |
-| [![raymondfeng]](http://github.com/raymondfeng) | [![dhmlau]](http://github.com/dhmlau) | [![marioestradarosa]](https://github.com/marioestradarosa) | [![achrinza]](https://github.com/achrinza) | [![frbuceta]](https://github.com/frbuceta) |
+|                  Raymond Feng                   |               Diana Lau               |                       Mario Estrada                        |               Rifa Achrinza                |              Francisco Buceta              |            Samarpan Bhattacharya             |
+| :---------------------------------------------: | :-----------------------------------: | :--------------------------------------------------------: | :----------------------------------------: | :----------------------------------------: | :------------------------------------------: |
+| [![raymondfeng]](http://github.com/raymondfeng) | [![dhmlau]](http://github.com/dhmlau) | [![marioestradarosa]](https://github.com/marioestradarosa) | [![achrinza]](https://github.com/achrinza) | [![frbuceta]](https://github.com/frbuceta) | [![samarpanB]](https://github.com/samarpanB) |
 
 ### Other Project Maintainers
 
-|                 Nora Abdelgadir                  |              Matthew Schnee              |                    Hage Yaapa                    |
-| :----------------------------------------------: | :--------------------------------------: | :----------------------------------------------: |
-| [![nabdelgadir]](https://github.com/nabdelgadir) | [![mschnee]](https://github.com/mschnee) | [![hacksparrow]](https://github.com/hacksparrow) |
-|                    Agnes Lin                     |                  Madaky                  |                   Hugo Da Roit                   |
-|    [![agnes512]](https://github.com/agnes512)    |  [![madaky]](https://github.com/madaky)  |        [![yaty]](https://github.com/yaty)        |
-|                    Nico Flaig                    |              Denny Bartelt               |               Douglas McConnachie                |
-|      [![nflaig]](https://github.com/nflaig)      | [![derdeka]](https://github.com/derdeka) |    [![dougal83]](https://github.com/dougal83)    |
+|                 Nora Abdelgadir                  |               Matthew Schnee               |                    Hage Yaapa                    |
+| :----------------------------------------------: | :----------------------------------------: | :----------------------------------------------: |
+| [![nabdelgadir]](https://github.com/nabdelgadir) |  [![mschnee]](https://github.com/mschnee)  | [![hacksparrow]](https://github.com/hacksparrow) |
+|                  **Agnes Lin**                   |                 **Madaky**                 |                 **Hugo Da Roit**                 |
+|    [![agnes512]](https://github.com/agnes512)    |   [![madaky]](https://github.com/madaky)   |        [![yaty]](https://github.com/yaty)        |
+|                  **Nico Flaig**                  |             **Denny Bartelt**              |             **Douglas McConnachie**              |
+|      [![nflaig]](https://github.com/nflaig)      |  [![derdeka]](https://github.com/derdeka)  |    [![dougal83]](https://github.com/dougal83)    |
+|            **Samarpan Bhattacharya**             |             **Muhammad Aaqil**             |                                                  |
+|   [![samarpanB]](https://github.com/samarpanB)   | [![aaqilniz]](https://github.com/aaqilniz) |                                                  |
 
 See
 [all contributors](https://github.com/loopbackio/loopback-next/graphs/contributors).
@@ -159,3 +160,5 @@ See
 [mschnee]: https://avatars0.githubusercontent.com/u/1375316?v=4&s=60
 [madaky]: https://avatars3.githubusercontent.com/u/17172989?v=4&s=60
 [nflaig]: https://avatars3.githubusercontent.com/u/38436224?v=4&s=60
+[samarpanb]: https://avatars.githubusercontent.com/u/13620435?v=4&s=60
+[aaqilniz]: https://avatars.githubusercontent.com/u/25802906?v=4&s=60

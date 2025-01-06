@@ -1,24 +1,24 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {MetadataInspector, Reflector} from '@loopback/core';
 import {
-  belongsTo,
   Entity,
+  MODEL_KEY,
+  ModelDefinitionSyntax,
+  PropertyType,
+  belongsTo,
   hasMany,
   model,
-  ModelDefinitionSyntax,
-  MODEL_KEY,
   property,
-  PropertyType,
 } from '@loopback/repository';
 import {expect} from '@loopback/testlab';
 import {
-  getJsonSchema,
-  JsonSchema,
   JSON_SCHEMA_KEY,
+  JsonSchema,
+  getJsonSchema,
   modelToJsonSchema,
 } from '../..';
 import {expectValidJsonSchema} from '../helpers/expect-valid-json-schema';
@@ -62,6 +62,42 @@ describe('build-schema', () => {
         expect(() => modelToJsonSchema(TestModel)).to.throw(
           /Property TestModel.undef does not have "type" in its definition/,
         );
+      });
+
+      it('allows property of Binary type', () => {
+        @model()
+        class TestModel {
+          @property({type: 'Binary'})
+          image: Buffer;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema).to.eql({
+          title: 'TestModel',
+          type: 'object',
+          properties: {
+            image: {type: 'string', format: 'binary'},
+          },
+          additionalProperties: false,
+        });
+      });
+
+      it('allows property of buffer type', () => {
+        @model()
+        class TestModel {
+          @property({type: 'buffer'})
+          image: Buffer;
+        }
+
+        const jsonSchema = modelToJsonSchema(TestModel);
+        expect(jsonSchema).to.eql({
+          title: 'TestModel',
+          type: 'object',
+          properties: {
+            image: {type: 'string', format: 'buffer'},
+          },
+          additionalProperties: false,
+        });
       });
 
       it('allows property of null type', () => {
@@ -1094,7 +1130,10 @@ describe('build-schema', () => {
             properties: {
               id: {type: 'number'},
               categoryId: {type: 'number'},
-              category: {$ref: '#/definitions/CategoryWithRelations'},
+              category: {
+                $ref: '#/definitions/CategoryWithRelations',
+              },
+              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },
@@ -1103,7 +1142,9 @@ describe('build-schema', () => {
           id: {type: 'number'},
           products: {
             type: 'array',
-            items: {$ref: '#/definitions/ProductWithRelations'},
+            items: {
+              $ref: '#/definitions/ProductWithRelations',
+            },
           },
         },
         additionalProperties: false,
@@ -1146,6 +1187,7 @@ describe('build-schema', () => {
               category: {
                 $ref: '#/definitions/CategoryWithoutPropWithRelations',
               },
+              foreignKey: 'categoryId' as JsonSchema,
             },
             additionalProperties: false,
           },

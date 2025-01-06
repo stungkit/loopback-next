@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -37,6 +37,8 @@ function createPropertyTemplateData(val) {
       val.tsType = 'string[]';
     }
   } else if (val.type === 'buffer') {
+    val.tsType = 'Buffer';
+  } else if (val.type === 'Binary') {
     val.tsType = 'Buffer';
   }
 

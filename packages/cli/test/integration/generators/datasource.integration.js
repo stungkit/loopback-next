@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -128,6 +128,19 @@ describe('lb4 datasource integration', () => {
       .executeGenerator(generator)
       .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
       .withPrompts(complexCLIInput);
+
+    checkDataSourceFilesAgainstSnapshot();
+  });
+
+  it('correctly coerces setting input of type object and array with config', async () => {
+    await testUtils
+      .executeGenerator(generator)
+      .inDir(sandbox.path, () => testUtils.givenLBProject(sandbox.path))
+      .withArguments([
+        '--config',
+        `${JSON.stringify(complexCLIInput)}`,
+        '--yes',
+      ]);
 
     checkDataSourceFilesAgainstSnapshot();
   });

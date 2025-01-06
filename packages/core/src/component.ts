@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2019. All Rights Reserved.
 // Node module: @loopback/core
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -92,6 +92,11 @@ export interface Component {
   bindings?: Binding[];
 
   /**
+   * An array of component classes
+   */
+  components?: Constructor<Component>[];
+
+  /**
    * Other properties
    */
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -150,6 +155,13 @@ export function mountComponent(app: Application, component: Component) {
   if (component.services) {
     for (const service of component.services) {
       app.service(service);
+    }
+  }
+
+  if (component.components) {
+    for (const c of component.components) {
+      if (c === component) continue;
+      app.component(c);
     }
   }
 }

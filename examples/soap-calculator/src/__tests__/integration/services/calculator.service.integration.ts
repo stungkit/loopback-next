@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/example-soap-calculator
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,7 +11,8 @@ import {
 } from '../../../services/calculator.service';
 import {givenAConnectedDataSource} from '../../helpers';
 
-describe('CalculatorService', function (this: Mocha.Suite) {
+// FIXME: https://calculator-webservice.mybluemix.net/calculator?wsdl is down
+describe.skip('CalculatorService', function (this: Mocha.Suite) {
   let calculatorService: CalculatorService;
 
   // The calculator soap server is hosted in the cloud and it takes some time

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -25,10 +25,21 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       description: g.f('The name of the datasource to discover'),
     });
 
+    this.option('datasource', {
+      type: String,
+      description: g.f('The name of the datasource to discover'),
+    });
+
     this.option('views', {
       type: Boolean,
       description: g.f('Boolean to discover views'),
       default: true,
+    });
+
+    this.option('relations', {
+      type: Boolean,
+      description: g.f('Discover and create relations'),
+      default: false,
     });
 
     this.option('schema', {
@@ -50,6 +61,20 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       ),
       default: undefined,
     });
+
+    this.option('models', {
+      type: String,
+      description: g.f(
+        'Discover specific models without prompting users to select e.g:--models=table1,table2',
+      ),
+      default: undefined,
+    });
+
+    this.option('optionalId', {
+      type: Boolean,
+      description: g.f('Boolean to mark id property as optional field'),
+      default: false,
+    });
   }
 
   _setupGenerator() {
@@ -68,13 +93,18 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
    */
   setOptions() {
     /* istanbul ignore next */
-    if (this.options.dataSource) {
-      debug(`Data source specified: ${this.options.dataSource}`);
+    if (this.options.dataSource || this.options.datasource) {
+      debug(
+        `Data source specified: ${this.options.dataSource || this.options.datasource}`,
+      );
       this.artifactInfo.dataSource = modelMaker.loadDataSourceByName(
-        this.options.dataSource,
+        this.options.dataSource || this.options.datasource,
       );
     }
-
+    // remove not needed .env property
+    if (this.options.config) {
+      delete this.options?.env;
+    }
     return super.setOptions();
   }
 
@@ -109,16 +139,15 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         path.resolve(dsDir, `${utils.toFileName(s)}.datasource.js`),
       ),
     );
-
-    if (this.options.dataSource) {
+    if (this.options.dataSource || this.options.datasource) {
       if (
         this.dataSourceChoices
           .map(d => d.name)
-          .includes(this.options.dataSource)
+          .includes(this.options.dataSource || this.options.datasource)
       ) {
         Object.assign(this.artifactInfo, {
           dataSource: this.dataSourceChoices.find(
-            d => d.name === this.options.dataSource,
+            d => d.name === this.options.dataSource || this.options.datasource,
           ),
         });
       }
@@ -170,6 +199,10 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
         schema: this.options.schema,
       },
     );
+
+    // Sort alphabetically
+    this.modelChoices.sort((a, b) => a.name.localeCompare(b.name));
+
     debug(
       `Got ${this.modelChoices.length} models from ${this.artifactInfo.dataSource.name}`,
     );
@@ -184,6 +217,16 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     /* istanbul ignore next */
     if (this.options.all) {
       this.discoveringModels = this.modelChoices;
+    }
+
+    if (this.options.models) {
+      const answers = {discoveringModels: this.options.models.split(',')};
+      debug(`Models specified: ${JSON.stringify(answers)}`);
+      this.discoveringModels = [];
+      answers.discoveringModels.forEach(m => {
+        this.discoveringModels.push(this.modelChoices.find(c => c.name === m));
+      });
+      return;
     }
 
     const prompts = [
@@ -276,17 +319,33 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
     // eslint-disable-next-line @typescript-eslint/prefer-for-of
     for (let i = 0; i < this.discoveringModels.length; i++) {
       const modelInfo = this.discoveringModels[i];
+      // passing connector specific options from the cli through connectorDiscoveryOptions
+      let discoveryOptions = {};
+      if (this.options.connectorDiscoveryOptions) {
+        discoveryOptions = JSON.parse(this.options.connectorDiscoveryOptions);
+      }
       debug(`Discovering: ${modelInfo.name}...`);
-      this.artifactInfo.modelDefinitions.push(
-        await modelMaker.discoverSingleModel(
-          this.artifactInfo.dataSource,
-          modelInfo.name,
-          {
-            schema: modelInfo.owner,
-            disableCamelCase: this.artifactInfo.disableCamelCase,
-          },
-        ),
+      const modelDefinition = await modelMaker.discoverSingleModel(
+        this.artifactInfo.dataSource,
+        modelInfo.name,
+        {
+          schema: modelInfo.owner,
+          disableCamelCase: this.artifactInfo.disableCamelCase,
+          associations: this.options.relations,
+          ...discoveryOptions,
+        },
       );
+      if (this.options.optionalId) {
+        // Find id properties (can be multiple ids if using composite key)
+        const idProperties = Object.values(modelDefinition.properties).filter(
+          property => property.id,
+        );
+        // Mark as not required
+        idProperties.forEach(property => {
+          property.required = false;
+        });
+      }
+      this.artifactInfo.modelDefinitions.push(modelDefinition);
       debug(`Discovered: ${modelInfo.name}`);
     }
   }
@@ -321,6 +380,65 @@ module.exports = class DiscoveryGenerator extends ArtifactGenerator {
       );
       debug(`Writing: ${fullPath}`);
 
+      if (this.options.relations) {
+        const relationImports = [];
+        const relationDestinationImports = [];
+        const foreignKeys = {};
+        for (const relationName in templateData.settings.relations) {
+          const relation = templateData.settings.relations[relationName];
+          const targetModel = this.artifactInfo.modelDefinitions.find(
+            model => model.name === relation.model,
+          );
+          // If targetModel is not in discovered models, skip creating relation
+          if (targetModel) {
+            Object.assign(templateData.properties[relation.foreignKey], {
+              relation,
+            });
+            if (!relationImports.includes(relation.type)) {
+              relationImports.push(relation.type);
+            }
+            relationDestinationImports.push(relation.model);
+
+            foreignKeys[relationName] = {};
+            Object.assign(foreignKeys[relationName], {
+              name: relationName,
+              entity: relation.model,
+              entityKey: Object.entries(targetModel.properties).find(
+                x => x?.[1].id === 1,
+              )?.[0],
+              foreignKey: relation.foreignKey,
+            });
+          }
+        }
+        templateData.relationImports = relationImports;
+        templateData.relationDestinationImports = relationDestinationImports;
+        // Delete relation from modelSettings
+        delete templateData.settings.relations;
+        if (Object.keys(foreignKeys)?.length > 0) {
+          Object.assign(templateData.settings, {foreignKeys});
+        }
+        templateData.modelSettings = utils.stringifyModelSettings(
+          templateData.settings,
+        );
+      }
+      Object.keys(templateData.properties).forEach(key => {
+        const property = templateData.properties[key];
+        // if the type is enum
+        if (property.type.startsWith(`'enum`)) {
+          property.type = property.type.slice(1, -1);
+          const enumRemoved = property.type.split(`enum`)[1];
+          const enumValues = enumRemoved.slice(1, -1).replaceAll(`'`, '');
+          const enumValuesArray = enumValues.split(',');
+          let enumItems = '';
+          enumValuesArray.forEach(item => {
+            enumItems += `'${item}',`;
+          });
+          templateData.properties[key]['type'] = 'String';
+          templateData.properties[key]['tsType'] = 'string';
+          templateData.properties[key]['jsonSchema'] =
+            `{enum: [${enumItems.toString()}]}`;
+        }
+      });
       this.copyTemplatedFiles(
         modelDiscoverer.MODEL_TEMPLATE_PATH,
         fullPath,

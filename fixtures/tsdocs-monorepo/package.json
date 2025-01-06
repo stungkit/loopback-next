@@ -1,28 +1,29 @@
 {
   "name": "@loopback/tsdocs-monorepo",
   "description": "A monorepo for tsdocs testing",
-  "version": "0.2.4",
+  "version": "0.5.8",
   "private": true,
   "license": "MIT",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "fixtures/tsdocs-monorepo"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17",
+    "node": "18 || 20 || 22",
     "npm": ">=7"
   },
   "scripts": {
-    "bootstrap:fixtures": "node ../../packages/monorepo/lib/run-lerna.js bootstrap",
-    "build:fixtures": "node ../../packages/monorepo/lib/run-lerna.js run build",
-    "clean:fixtures": "node ../../packages/monorepo/lib/run-lerna.js run clean",
-    "build": "npm -s run bootstrap:fixtures && npm -s run clean:fixtures && npm run -s build:fixtures",
-    "postinstall": "npm run build"
+    "build:fixtures": "npx --no lerna run build",
+    "clean:fixtures": "npx --no lerna run clean",
+    "build": "npm -s run clean:fixtures && npm run -s build:fixtures"
   },
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
-    "@loopback/build": "^8.1.2"
+    "@loopback/build": "^11.0.8"
   }
 }

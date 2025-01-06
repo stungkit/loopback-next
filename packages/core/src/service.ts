@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/core
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -119,8 +119,8 @@ export function service(
         typeof serviceType === 'string'
           ? serviceType
           : typeof serviceType === 'symbol'
-          ? serviceType.toString()
-          : serviceType.name;
+            ? serviceType.toString()
+            : serviceType.name;
       return transformValueOrPromise(result, values => {
         if (values.length === 1) return values[0];
         if (values.length >= 1) {

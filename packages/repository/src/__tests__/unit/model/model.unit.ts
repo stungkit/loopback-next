@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -359,7 +359,7 @@ describe('model', () => {
     const aDate = new Date();
     const customer = createCustomerWithContactAndDate(aDate);
     Object.assign(customer, {unknown: 'abc'});
-    Object.assign(customer.address, {unknown: 'xyz'});
+    Object.assign(customer.address!, {unknown: 'xyz'});
     expect(customer.toObject()).to.eql({
       id: '123',
       email: 'xyz@example.com',

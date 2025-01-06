@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -43,7 +43,7 @@ export function resolveReferencesManyMetadata(
   }
 
   const sourceModel = relationMeta.source;
-  if (!sourceModel || !sourceModel.modelName) {
+  if (!sourceModel?.modelName) {
     const reason = 'source model must be defined';
     throw new InvalidRelationError(reason, relationMeta);
   }

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -50,12 +50,17 @@ if (tabCompletionCommands.includes(originalCommand)) {
 }
 
 const main = require('../lib/cli');
-const updateNotifier = require('update-notifier');
+
 // Force version check with `lb4 --version`
 const interval = opts.version ? 0 : undefined;
-updateNotifier({
-  pkg: pkg,
-  updateCheckInterval: interval,
-}).notify({isGlobal: true});
+
+import('update-notifier')
+  .then(({default: updateNotifier}) => {
+    updateNotifier({
+      pkg: pkg,
+      updateCheckInterval: interval,
+    }).notify({isGlobal: true});
+  })
+  .catch(() => {});
 
 main(opts);

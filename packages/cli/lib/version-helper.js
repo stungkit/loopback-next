@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -35,7 +35,6 @@ function printVersions(log = console.log) {
  */
 async function checkDependencies(generator) {
   const pkg = generator.fs.readJSON(generator.destinationPath('package.json'));
-  generator.packageJson = pkg;
 
   const isUpdate = generator.command === 'update';
   const pkgDeps = pkg
@@ -131,7 +130,7 @@ async function checkDependencies(generator) {
     return;
   }
 
-  const originalCliVersion = generator.config.get('update') || '<unknown>';
+  const originalCliVersion = generator.config.get('version') || '<unknown>';
   generator.log(
     chalk.red(
       g.f(
@@ -169,7 +168,7 @@ async function checkDependencies(generator) {
  */
 function updateDependencies(generator) {
   const pkg =
-    generator.packageJson ||
+    generator.packageJson.getAll() ||
     generator.fs.readJSON(generator.destinationPath('package.json'));
   const depUpdates = [];
   for (const d in templateDeps) {
@@ -199,9 +198,9 @@ function updateDependencies(generator) {
       pkg.peerDependencies[d] !== templateDeps[d]
     ) {
       depUpdates.push(
-        `- PeerDependency ${d}: ${pkg.devDependencies[d]} => ${templateDeps[d]}`,
+        `- PeerDependency ${d}: ${pkg.peerDependencies[d]} => ${templateDeps[d]}`,
       );
-      pkg.devDependencies[d] = templateDeps[d];
+      pkg.peerDependencies[d] = templateDeps[d];
     }
   }
   if (depUpdates.length) {

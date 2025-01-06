@@ -328,6 +328,14 @@
 /examples/graphql @raymondfeng
 
 #
+# Sequelize
+#
+# - Issue label: Sequelize
+# - Primary owner(s): @shubhamp-sf
+# - Standby owner(s): @samarpanB
+/extensions/sequelize @shubhamp-sf @samarpanB
+
+#
 # MessagePack body parser
 #
 # - Issue label: n/a
@@ -351,7 +359,6 @@
 # - Standby owner(s): @emonddr
 /bin @emonddr @raymondfeng
 /packages/build @emonddr @raymondfeng @achrinza
-/packages/monorepo @raymondfeng
 /packages/eslint-config @emonddr @raymondfeng
 /packages/tsdocs @emonddr @raymondfeng
 /fixtures/tsdocs-monorepo @emonddr @raymondfeng

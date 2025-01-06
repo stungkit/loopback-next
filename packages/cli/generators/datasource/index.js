@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -63,6 +63,11 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
   }
 
   setOptions() {
+    // remove not needed .env property
+    if (this.options.config) {
+      delete this.options?.env;
+    }
+    this.artifactInfo.connector = this.options.connector;
     return super.setOptions();
   }
 
@@ -230,7 +235,9 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
             if (props[key] == null || props[key] === '') {
               delete props[key];
             } else {
-              props[key] = JSON.parse(props[key]);
+              if (typeof props[key] === 'string') {
+                props[key] = JSON.parse(props[key]);
+              }
             }
             break;
         }
@@ -298,7 +305,7 @@ module.exports = class DataSourceGenerator extends ArtifactGenerator {
     if (this.shouldExit()) return false;
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
 
     // Connector package.

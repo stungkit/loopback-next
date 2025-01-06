@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -36,7 +36,14 @@ module.exports = class ProjectGenerator extends BaseGenerator {
         name: 'loopbackBuild',
         description: g.f('use @loopback/build helpers (e.g. lb-eslint)'),
       },
-      {name: 'vscode', description: g.f('add VSCode config files')},
+      {
+        name: 'editorconfig',
+        description: g.f('add EditorConfig files'),
+      },
+      {
+        name: 'vscode',
+        description: g.f('add VSCode config files'),
+      },
     ];
   }
 
@@ -77,6 +84,11 @@ module.exports = class ProjectGenerator extends BaseGenerator {
       description: g.f('Use @loopback/build'),
     });
 
+    this.option('editorconfig', {
+      type: Boolean,
+      description: g.f('Use preconfigured EditorConfig settings'),
+    });
+
     this.option('vscode', {
       type: Boolean,
       description: g.f('Use preconfigured VSCode settings'),
@@ -96,7 +108,7 @@ module.exports = class ProjectGenerator extends BaseGenerator {
    * from files that have it during project generation.
    */
   _setupRenameTransformer() {
-    this.registerTransformStream(utils.renameEJS());
+    this.queueTransformStream(utils.renameEJS());
   }
 
   async setOptions() {
@@ -299,6 +311,10 @@ module.exports = class ProjectGenerator extends BaseGenerator {
 
     if (!this.projectInfo.mocha) {
       this.fs.delete(this.destinationPath('.mocharc.json'));
+    }
+
+    if (!this.projectInfo.editorconfig) {
+      this.fs.delete(this.destinationPath('.editorconfig'));
     }
 
     if (!this.projectInfo.vscode) {

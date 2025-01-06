@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/cron
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -54,7 +54,7 @@ describe('Cron (acceptance)', () => {
     const jobs = await component.getJobs();
     expect(jobs).to.eql([job]);
     expect(count).to.be.greaterThan(0);
-  });
+  }).timeout(15000);
 
   it('allows cron jobs to be bound as class', async () => {
     let count = 0;

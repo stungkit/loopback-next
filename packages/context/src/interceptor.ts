@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -391,7 +391,7 @@ export function registerInterceptor(
   }
 
   const namespace =
-    options.namespace ?? options.defaultNamespace ?? global
+    (options.namespace ?? options.defaultNamespace ?? global)
       ? GLOBAL_INTERCEPTOR_NAMESPACE
       : LOCAL_INTERCEPTOR_NAMESPACE;
 
