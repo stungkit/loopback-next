@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -75,6 +75,20 @@ describe('build-schema', () => {
     it('converts Boolean', () => {
       expect(metaToJsonProperty({type: Boolean})).to.eql({
         type: 'boolean',
+      });
+    });
+
+    it('converts Binary', () => {
+      expect(metaToJsonProperty({type: 'Binary'})).to.eql({
+        type: 'string',
+        format: 'binary',
+      });
+    });
+
+    it('converts buffer', () => {
+      expect(metaToJsonProperty({type: 'buffer'})).to.eql({
+        type: 'string',
+        format: 'buffer',
       });
     });
 

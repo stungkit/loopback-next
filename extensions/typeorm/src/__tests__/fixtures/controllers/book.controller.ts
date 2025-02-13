@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/typeorm
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -51,9 +51,7 @@ export class BookController {
       },
     },
   })
-  async findById(
-    @param.path.string('id') id: string,
-  ): Promise<Book | undefined> {
-    return this.bookRepo.findOne(id);
+  async findById(@param.path.number('id') id: number): Promise<Book | null> {
+    return this.bookRepo.findOne({where: {id}});
   }
 }

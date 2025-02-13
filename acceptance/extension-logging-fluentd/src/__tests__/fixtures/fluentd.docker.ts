@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/test-extension-logging-fluentd
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -15,8 +15,16 @@ async function startFluentd() {
   const container = await new GenericContainer('fluent/fluentd')
     .withName('fluentd_lb4')
     .withExposedPorts(24224, 9880)
-    .withEnv('FLUENTD_CONF', 'fluentd.conf')
-    .withBindMount(ETC_DIR, '/fluentd/etc', 'ro')
+    .withEnvironment({
+      FLUENTD_CONF: 'fluentd.conf',
+    })
+    .withBindMounts([
+      {
+        source: ETC_DIR,
+        target: '/fluentd/etc',
+        mode: 'ro',
+      },
+    ])
     .start();
   process.env.FLUENTD_SERVICE_HOST = container.getHost();
   process.env.FLUENTD_SERVICE_PORT_TCP = container

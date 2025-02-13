@@ -1,7 +1,7 @@
 {
   "name": "@loopback/benchmark",
   "description": "Benchmarks measuring performance of our framework.",
-  "version": "3.1.2",
+  "version": "6.0.11",
   "keywords": [
     "loopback",
     "performance",
@@ -11,15 +11,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "benchmark"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -38,29 +38,29 @@
     "!*/__tests__"
   ],
   "dependencies": {
-    "@loopback/core": "^3.1.2",
-    "@loopback/example-todo": "^5.1.2",
-    "@loopback/openapi-spec-builder": "^4.1.2",
-    "@loopback/rest": "^11.1.2",
-    "@types/byline": "^4.2.33",
-    "@types/debug": "^4.1.7",
-    "@types/request-promise-native": "^1.0.18",
-    "autocannon": "^7.8.1",
-    "axios": "^0.26.1",
+    "@loopback/core": "^6.1.8",
+    "@loopback/example-todo": "^8.1.2",
+    "@loopback/openapi-spec-builder": "^7.0.10",
+    "@loopback/rest": "^14.0.11",
+    "@types/byline": "^4.2.36",
+    "@types/debug": "^4.1.12",
+    "@types/request-promise-native": "^1.0.21",
+    "autocannon": "^8.0.0",
+    "axios": "^1.7.9",
     "benchmark": "^2.1.4",
     "byline": "^5.0.0",
-    "debug": "^4.3.4",
-    "path-to-regexp": "^6.2.0",
-    "tslib": "^2.3.1"
+    "debug": "^4.4.0",
+    "path-to-regexp": "^6.3.0",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
-    "@loopback/testlab": "^4.1.2",
-    "@types/autocannon": "^7.6.1",
-    "@types/benchmark": "^2.1.1",
-    "@types/mocha": "^9.1.0",
-    "@types/node": "^12.20.47",
-    "mocha": "^9.2.2",
+    "@loopback/build": "^11.0.10",
+    "@loopback/testlab": "^7.0.10",
+    "@types/autocannon": "^7.12.6",
+    "@types/benchmark": "^2.1.5",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^16.18.126",
+    "mocha": "^11.1.0",
     "source-map-support": "^0.5.21"
   }
 }

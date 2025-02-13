@@ -1,19 +1,19 @@
 {
   "name": "@loopback/sandbox-example",
   "description": "Sample project for sandbox",
-  "version": "3.0.0",
+  "version": "6.0.1",
   "private": true,
   "license": "MIT",
   "main": "index.js",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "sandbox/example"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "test": "echo \"This is an example for sandbox\""

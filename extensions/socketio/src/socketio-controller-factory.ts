@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -31,7 +31,10 @@ type SocketIoEventMatcherInfo = {
  * Request context for a socket.io request
  */
 export class SocketIoConnectionContext extends Context {
-  constructor(public readonly socket: Socket, parent: Context) {
+  constructor(
+    public readonly socket: Socket,
+    parent: Context,
+  ) {
     super(parent);
   }
 }
@@ -45,7 +48,7 @@ export class SocketIoControllerFactory {
 
   constructor(
     parentCtx: Context,
-    private controllerClass: Constructor<unknown>,
+    private controllerClass: Constructor<object>,
     socket: Socket,
   ) {
     this.connCtx = new SocketIoConnectionContext(socket, parentCtx);

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -153,7 +153,7 @@ export function getFilterJsonSchemaFor(
             type: 'object',
             properties: {
               // TODO(bajtos) restrict values to relations defined by "model"
-              relation: {type: 'string'},
+              relation: {type: 'string', enum: Object.keys(modelRelations)},
               // TODO(bajtos) describe the filter for the relation target model
               scope: getScopeFilterJsonSchemaFor(modelCtor, options),
             },

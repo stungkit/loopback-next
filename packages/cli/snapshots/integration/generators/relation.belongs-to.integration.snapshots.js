@@ -7,6 +7,61 @@
 
 'use strict';
 
+exports[`lb4 relation checks generated repository with registerInclusionResolver set to false in --config generated repository file should not have inclusion resolver registered 1`] = `
+import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
+import {Order, Customer} from '../models';
+import {DbDataSource} from '../datasources';
+import {inject, Getter} from '@loopback/core';
+import {CustomerRepository} from './customer.repository';
+
+export class OrderRepository extends DefaultCrudRepository<
+  Order,
+  typeof Order.prototype.id
+> {
+  public readonly myCustomer: BelongsToAccessor<
+    Customer,
+    typeof Order.prototype.id
+  >;
+
+  public readonly custom_name: BelongsToAccessor<Customer, typeof Order.prototype.id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
+    super(Order, dataSource);
+    this.custom_name = this.createBelongsToAccessorFor('custom_name', customerRepositoryGetter,);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation checks generated repository with registerInclusionResolver set to true in --config generated repository file should have inclusion resolver registered 1`] = `
+import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
+import {Order, Customer} from '../models';
+import {DbDataSource} from '../datasources';
+import {inject, Getter} from '@loopback/core';
+import {CustomerRepository} from './customer.repository';
+
+export class OrderRepository extends DefaultCrudRepository<
+  Order,
+  typeof Order.prototype.id
+> {
+  public readonly myCustomer: BelongsToAccessor<
+    Customer,
+    typeof Order.prototype.id
+  >;
+
+  public readonly custom_name: BelongsToAccessor<Customer, typeof Order.prototype.id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('CustomerRepository') protected customerRepositoryGetter: Getter<CustomerRepository>,) {
+    super(Order, dataSource);
+    this.custom_name = this.createBelongsToAccessorFor('custom_name', customerRepositoryGetter,);
+    this.registerInclusionResolver('custom_name', this.custom_name.inclusionResolver);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation checks generated source class repository answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","relationName":"custom_name","registerInclusionResolver":false} generates Order repository file with different inputs 1`] = `
 import {DefaultCrudRepository, BelongsToAccessor, repository} from '@loopback/repository';
 import {Order, Customer} from '../models';
@@ -62,6 +117,29 @@ export class OrderRepository extends DefaultCrudRepository<
 `;
 
 
+exports[`lb4 relation checks generated source class repository for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} generates Employee repository file with different inputs 1`] = `
+import {inject, Getter} from '@loopback/core';
+import {DefaultCrudRepository, repository, BelongsToAccessor} from '@loopback/repository';
+import {DbDataSource} from '../datasources';
+import {Employee} from '../models';
+
+export class EmployeeRepository extends DefaultCrudRepository<
+  Employee,
+  typeof Employee.prototype.id
+> {
+
+  public readonly employee: BelongsToAccessor<Employee, typeof Employee.prototype.id>;
+
+  constructor(@inject('datasources.db') dataSource: DbDataSource, @repository.getter('EmployeeRepository') protected employeeRepositoryGetter: Getter<EmployeeRepository>,) {
+    super(Employee, dataSource);
+    this.employee = this.createBelongsToAccessorFor('employee', employeeRepositoryGetter,);
+    this.registerInclusionResolver('employee', this.employee.inclusionResolver);
+  }
+}
+
+`;
+
+
 exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer","relationName":"my_customer"} checks controller content with belongsTo relation 1`] = `
 import {
   repository,
@@ -89,7 +167,7 @@ export class OrderCustomerController {
         description: 'Customer belonging to Order',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Customer)},
+            schema: getModelSchemaRef(Customer),
           },
         },
       },
@@ -138,7 +216,7 @@ export class OrderCustomerController {
         description: 'Customer belonging to Order',
         content: {
           'application/json': {
-            schema: {type: 'array', items: getModelSchemaRef(Customer)},
+            schema: getModelSchemaRef(Customer),
           },
         },
       },
@@ -156,6 +234,18 @@ export class OrderCustomerController {
 
 exports[`lb4 relation checks if the controller file created  answers {"relationType":"belongsTo","sourceModel":"Order","destinationModel":"Customer"} the new controller file added to index.ts file 1`] = `
 export * from './order-customer.controller';
+
+`;
+
+
+exports[`lb4 relation checks if the controller file created for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} checks controller content with belongsTo relation with same table 1`] = `
+export class EmployeeController {}
+
+`;
+
+
+exports[`lb4 relation checks if the controller file created for same table relation answers {"relationType":"belongsTo","sourceModel":"Employee","destinationModel":"Employee"} the new controller file added to index.ts file 1`] = `
+export * from './employee-employee.controller';
 
 `;
 
@@ -240,6 +330,44 @@ export class Order extends Entity {
   customerId: number;
 
   constructor(data?: Partial<Order>) {
+    super(data);
+  }
+}
+
+`;
+
+
+exports[`lb4 relation generates model relation with same table with default foreignKeyName verifies that a preexisting property will be overwritten 1`] = `
+import {Entity, model, property, belongsTo} from '@loopback/repository';
+
+@model()
+export class Employee extends Entity {
+  @property({
+    type: 'number',
+    id: true,
+    default: 0,
+  })
+  id?: number;
+
+  @property({
+    type: 'string',
+  })
+  firstName?: string;
+
+  @property({
+    type: 'string',
+  })
+  lastName?: string;
+
+  @property({
+    type: 'number',
+  })
+  reportsTo?: string;
+
+  @belongsTo(() => Employee, {name: 'reportsToEemployee'})
+  employeeId: number;
+
+  constructor(data?: Partial<Employee>) {
     super(data);
   }
 }

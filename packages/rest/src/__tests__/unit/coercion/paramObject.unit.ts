@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -129,9 +129,13 @@ describe('coerce object param - optional', function () {
   });
 
   context('invalid values should trigger ERROR_BAD_REQUEST', () => {
+    const NODE_MAJOR_VERSION = parseInt(process.versions.node.split('.')[0]);
     testInvalidDataError('text', {
       details: {
-        syntaxError: 'Unexpected token e in JSON at position 1',
+        syntaxError:
+          NODE_MAJOR_VERSION >= 19
+            ? 'Unexpected token \'e\', "text" is not valid JSON'
+            : 'Unexpected token e in JSON at position 1',
       },
     });
 

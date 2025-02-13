@@ -1,19 +1,19 @@
 {
   "name": "@loopback/typeorm",
   "description": "Adds support for TypeORM in LoopBack",
-  "version": "0.6.2",
+  "version": "0.10.11",
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "extensions/typeorm"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -33,26 +33,26 @@
     "!*/__tests__"
   ],
   "peerDependencies": {
-    "@loopback/boot": "^4.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/rest": "^11.1.2"
+    "@loopback/boot": "^7.0.0",
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "debug": "^4.3.4",
-    "tslib": "^2.3.1",
-    "typeorm": "^0.2.45"
+    "debug": "^4.4.0",
+    "tslib": "^2.8.1",
+    "typeorm": "^0.3.20"
   },
   "devDependencies": {
-    "@loopback/boot": "^4.1.2",
-    "@loopback/build": "^8.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/repository": "^4.1.2",
-    "@loopback/rest": "^11.1.2",
-    "@loopback/testlab": "^4.1.2",
-    "@types/debug": "^4.1.7",
-    "@types/json-schema": "^7.0.11",
-    "@types/node": "^12.20.47",
-    "sqlite3": "^5.0.2"
+    "@loopback/boot": "^7.0.11",
+    "@loopback/build": "^11.0.10",
+    "@loopback/core": "^6.1.8",
+    "@loopback/eslint-config": "^15.0.5",
+    "@loopback/repository": "^7.0.11",
+    "@loopback/rest": "^14.0.11",
+    "@loopback/testlab": "^7.0.10",
+    "@types/debug": "^4.1.12",
+    "@types/json-schema": "^7.0.15",
+    "@types/node": "^16.18.126",
+    "sqlite3": "^5.1.4"
   }
 }

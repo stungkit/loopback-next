@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -51,14 +51,16 @@ export class InfoSpecEnhancer implements OASEnhancer {
       spec.info.version === DEFAULT_OPENAPI_SPEC_INFO.version;
     const patchSpec = {
       info: {
-        title: overrideInfo ? this.pkg.name : spec.info.title ?? this.pkg.name,
+        title: overrideInfo
+          ? this.pkg.name
+          : (spec.info.title ?? this.pkg.name),
         description: overrideInfo
           ? this.pkg.description
-          : spec.info.description ?? this.pkg.description,
+          : (spec.info.description ?? this.pkg.description),
         version: overrideInfo
           ? this.pkg.version
-          : spec.info.version ?? this.pkg.version,
-        contact: overrideInfo ? contact : spec.info.contact ?? contact,
+          : (spec.info.version ?? this.pkg.version),
+        contact: overrideInfo ? contact : (spec.info.contact ?? contact),
       },
     };
     debug('Enhancing OpenAPI spec with %j', patchSpec);

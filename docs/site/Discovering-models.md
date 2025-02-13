@@ -35,9 +35,12 @@ Models can be discovered from a supported datasource by running the
 
 ### Options
 
-`--dataSource`: Put a valid datasource name here to skip the datasource prompt
+`--dataSource or --datasource`: Put a valid datasource name here to skip the
+datasource prompt
 
 `--views`: Choose whether to discover views. Default is true
+
+`--relations`: Choose whether to create relations. Default is false
 
 `--all`: Skips the model prompt and discovers all of them
 
@@ -46,6 +49,17 @@ placed. Default is `src/models`
 
 `--schema`: Specify the schema which the datasource will find the models to
 discover
+
+**`--models`**: Specify the models to be generated e.g:--models=table1,table2
+
+`--optionalId`: Specify if the Id property of generated models will be marked as
+
+not required
+
+`--connectorDiscoveryOptions`: Pass the options to the connectors. For example:
+Passing `--connectorDiscoveryOptions = '{"treatTINYINT1AsTinyInt":false}'` to
+`loopback-mysql-connector` would make the connector treat `tinyint `as a
+`boolean`.
 
 ### Interactive Prompts
 

@@ -93,7 +93,7 @@ name or the relation name, you'll need to specify some fields through the
 relation decorator.
 
 The standard naming convention for the foreign key property in the source model
-is `relation name` + `Id` (for example, Order.customerId).
+is `target name` + `Id` (for example, Order.customerId).
 
 {% include code-caption.html content="/src/models/order.model.ts" %}
 
@@ -319,7 +319,7 @@ In LoopBack 3, the REST APIs for relations were exposed using static methods
 with the name following the pattern `__{methodName}__{relationName}__` (e.g.
 `Order.__get__customer`). While we recommend to create a new controller for each
 hasMany relation in LoopBack 4, we also think it's best to use the main CRUD
-controller as the place where to explose `belongsTo` API.
+controller as the place where to expose `belongsTo` API.
 
 ## Handling recursive relations
 

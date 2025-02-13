@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -22,7 +22,7 @@ import {
   Options,
   PositionalParameters,
 } from '../common-types';
-import {EntityNotFoundError} from '../errors';
+import {EntityNotFoundError, InvalidBodyError} from '../errors';
 import {
   Entity,
   Model,
@@ -32,20 +32,20 @@ import {
 import {
   BelongsToAccessor,
   BelongsToDefinition,
-  createBelongsToAccessor,
-  createHasManyRepositoryFactory,
-  createHasManyThroughRepositoryFactory,
-  createHasOneRepositoryFactory,
-  createReferencesManyAccessor,
   HasManyDefinition,
   HasManyRepositoryFactory,
   HasManyThroughRepositoryFactory,
   HasOneDefinition,
   HasOneRepositoryFactory,
-  includeRelatedModels,
   InclusionResolver,
   ReferencesManyAccessor,
   ReferencesManyDefinition,
+  createBelongsToAccessor,
+  createHasManyRepositoryFactory,
+  createHasManyThroughRepositoryFactory,
+  createHasOneRepositoryFactory,
+  createReferencesManyAccessor,
+  includeRelatedModels,
 } from '../relations';
 import {IsolationLevel, Transaction} from '../transaction';
 import {isTypeResolver, resolveType} from '../type-resolver';
@@ -55,7 +55,6 @@ import {
 } from './repository';
 
 export namespace juggler {
-  /* eslint-disable @typescript-eslint/no-unused-vars */
   export import DataSource = legacy.DataSource;
   export import ModelBase = legacy.ModelBase;
   export import ModelBaseClass = legacy.ModelBaseClass;
@@ -170,7 +169,7 @@ export class DefaultCrudRepository<
 
   /**
    * Creates a legacy persisted model class, attaches it to the datasource and
-   * returns it. This method can be overriden in sub-classes to acess methods
+   * returns it. This method can be overridden in sub-classes to acess methods
    * and properties in the generated model class.
    * @param entityClass - LB4 Entity constructor
    */
@@ -499,7 +498,9 @@ export class DefaultCrudRepository<
     const data = await Promise.all(
       entities.map(e => this.entityToData(e, options)),
     );
-    const models = await ensurePromise(this.modelClass.create(data, options));
+    const models = await ensurePromise(
+      this.modelClass.createAll(data, options),
+    );
     return this.toEntities(models);
   }
 
@@ -592,6 +593,9 @@ export class DefaultCrudRepository<
     data: DataObject<T>,
     options?: Options,
   ): Promise<void> {
+    if (!Object.keys(data).length) {
+      throw new InvalidBodyError(this.entityClass, id);
+    }
     if (id === undefined) {
       throw new Error('Invalid Argument: id cannot be undefined');
     }

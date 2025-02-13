@@ -48,6 +48,7 @@ Enable all options besides `docker`, unless you know what you are doing, see
  ◉ Enable prettier: install prettier to format code conforming to rules
  ◉ Enable mocha: install mocha to run tests
  ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
+ ◉ Enable editorconfig: add EditorConfig files
  ◉ Enable vscode: add VSCode config files
 ❯◯ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin
@@ -78,4 +79,4 @@ step.
 Previous step:
 [Soap Web Service Overview](soap-calculator-tutorial-web-service-overview.md)
 
-Next step: [Add a Datasoure](soap-calculator-tutorial-add-datasource.md)
+Next step: [Add a Datasource](soap-calculator-tutorial-add-datasource.md)

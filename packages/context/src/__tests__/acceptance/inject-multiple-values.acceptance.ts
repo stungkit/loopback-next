@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -86,9 +86,8 @@ describe('@inject.* to receive multiple values matching a filter', () => {
         ) {}
       }
       server.bind('my-controller').toClass(MyControllerWithBindingSorter);
-      const inst = await server.get<MyControllerWithBindingSorter>(
-        'my-controller',
-      );
+      const inst =
+        await server.get<MyControllerWithBindingSorter>('my-controller');
       // app-reporter, server-reporter
       expect(inst.values).to.eql([5, 3]);
     });

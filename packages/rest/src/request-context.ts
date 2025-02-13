@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -83,8 +83,8 @@ export class RequestContext
     if (!host) {
       // No host detected from http headers
       // Use the configured values or the local network address
-      host = config.host ?? request.socket.localAddress;
-      port = (config.port || request.socket.localPort).toString();
+      host = config.host ?? request.socket.localAddress ?? '';
+      port = ((config.port || request.socket.localPort) ?? '').toString();
     }
 
     // clear default ports

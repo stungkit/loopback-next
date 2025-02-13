@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -304,8 +304,8 @@ module.exports = class HasManyThroughRelationGenerator extends (
     )}.prototype.${this.artifactInfo.dstModelPrimaryKey},
       ${utils.toClassName(this.artifactInfo.throughModelClass)},
       typeof ${utils.toClassName(this.artifactInfo.srcModelClass)}.prototype.${
-      this.artifactInfo.srcModelPrimaryKey
-    }
+        this.artifactInfo.srcModelPrimaryKey
+      }
     >`;
   }
 

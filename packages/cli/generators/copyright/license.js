@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -43,7 +43,7 @@ This project is licensed under the ${license.name}, full text below.
 ${text}
 `;
   /*
-Copyright (c) IBM Corp. 2018,2019. All Rights Reserved.
+Copyright (c) IBM Corp. and LoopBack contributors 2018,2019. All Rights Reserved.
 Node module: @loopback/boot
 This project is licensed under the MIT License, full text below.
 
@@ -86,13 +86,12 @@ async function updateLicense(projectRoot, pkg, options) {
   if (typeof licenseId === 'object') {
     licenseId = licenseId.id;
   }
-  pkg.license = licenseId;
-  pkg['copyright.owner'] = options.copyrightOwner;
-  await fs.writeJSON(path.join(projectRoot, 'package.json'), pkg);
+  pkg.set('license', licenseId);
+  pkg.set('copyright.owner', options.copyrightOwner);
   await fs.write(
     path.join(projectRoot, 'LICENSE'),
     renderLicense({
-      name: pkg.name,
+      name: pkg.get('name'),
       owner: options.copyrightOwner,
       license: options.license,
       years: await getYears(projectRoot),

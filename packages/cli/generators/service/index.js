@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -329,7 +329,7 @@ module.exports = class ServiceGenerator extends ArtifactGenerator {
       utils.toClassName(this.artifactInfo.dataSourceName) + 'DataSource';
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
 
     if (!deps['@loopback/service-proxy']) {

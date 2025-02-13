@@ -1,7 +1,7 @@
 {
   "name": "@loopback/rest-explorer",
   "description": "LoopBack's API Explorer",
-  "version": "4.1.2",
+  "version": "7.0.11",
   "keywords": [
     "LoopBack",
     "Explorer",
@@ -10,15 +10,15 @@
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "packages/rest-explorer"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -38,23 +38,23 @@
     "templates"
   ],
   "peerDependencies": {
-    "@loopback/core": "^3.1.2",
-    "@loopback/rest": "^11.1.2"
+    "@loopback/core": "^6.0.0",
+    "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "ejs": "^3.1.6",
-    "swagger-ui-dist": "4.10.3",
-    "tslib": "^2.3.1"
+    "ejs": "^3.1.10",
+    "swagger-ui-dist": "5.18.3",
+    "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
-    "@loopback/core": "^3.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/rest": "^11.1.2",
-    "@loopback/testlab": "^4.1.2",
-    "@types/ejs": "^3.1.0",
-    "@types/express": "^4.17.13",
-    "@types/node": "^12.20.47",
-    "express": "^4.17.3"
+    "@loopback/build": "^11.0.10",
+    "@loopback/core": "^6.1.8",
+    "@loopback/eslint-config": "^15.0.5",
+    "@loopback/rest": "^14.0.11",
+    "@loopback/testlab": "^7.0.10",
+    "@types/ejs": "^3.1.5",
+    "@types/express": "^4.17.21",
+    "@types/node": "^16.18.126",
+    "express": "^4.21.2"
   }
 }

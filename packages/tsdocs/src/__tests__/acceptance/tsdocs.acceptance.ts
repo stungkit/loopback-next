@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/tsdocs
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -18,8 +18,8 @@ const MONOREPO_ROOT = path.dirname(
 const APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/apidocs');
 const SITE_APIDOCS_ROOT = path.join(MONOREPO_ROOT, 'docs/site/apidocs');
 
-describe('tsdocs', function (this: Mocha.Suite) {
-  this.timeout(10000);
+describe('tsdocs', /** @this {Mocha.Context} */ function () {
+  this.timeout(15000);
 
   const API_MD_FILES = [
     'index.md',

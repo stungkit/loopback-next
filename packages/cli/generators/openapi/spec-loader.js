@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -10,6 +10,7 @@ const swagger2openapi = require('swagger2openapi');
 const {debugJson, cloneSpecObject} = require('./utils');
 const {generateControllerSpecs} = require('./spec-helper');
 const {generateModelSpecs, registerNamedSchemas} = require('./schema-helper');
+const {ResolverError} = require('@apidevtools/json-schema-ref-parser');
 
 /**
  * Load swagger specs from the given url or file path; handle yml or json
@@ -42,7 +43,14 @@ async function loadSpec(specUrlStr, {log, validate} = {}) {
       },
     });
   } else {
-    spec = await parser.dereference(spec);
+    try {
+      spec = await parser.dereference(spec);
+    } catch (error) {
+      // If returns http unauthorized error, ignore resolving external ref$ pointer
+      if (error instanceof ResolverError) {
+        spec = await parser.dereference(spec, {resolve: {external: false}});
+      }
+    }
   }
 
   return spec;

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -71,7 +71,7 @@ async function buildOperationArguments(
       throw new Error('$ref requestBody is not supported yet.');
     }
     const i = operationSpec.requestBody[REQUEST_BODY_INDEX];
-    requestBodyIndex = i != null ? i : 0;
+    requestBodyIndex = i ?? 0;
   }
 
   const paramArgs: OperationArgs = [];

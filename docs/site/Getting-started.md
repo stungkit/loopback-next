@@ -9,7 +9,7 @@ summary: Write and run a LoopBack 4 "Hello World" project in TypeScript.
 
 ## Prerequisites
 
-Install [Node.js](https://nodejs.org/en/download/) (version 10 or higher) if it
+Install [Node.js](https://nodejs.org/en/download/) (version 16 or higher) if it
 is not already installed on your machine.
 
 ## Install LoopBack 4 CLI
@@ -30,6 +30,9 @@ The CLI tool will scaffold the project, configure the TypeScript compiler, and
 install all the required dependencies. To create a new project, run the CLI as
 follows and answer the prompts.
 
+> We also have a specific generator to generate LoopBack projects. Run
+> `npm create loopback`
+
 ```sh
 lb4 app
 ```
@@ -39,13 +42,14 @@ Answer the prompts as follows:
 ```sh
 ? Project name: getting-started
 ? Project description: Getting started tutorial
-? Project root directory: (getting-started)
+? Project root directory: getting-started
 ? Application class name: StarterApplication
 ? Select features to enable in the project:
 ❯◉ Enable eslint: add a linter with pre-configured lint rules
  ◉ Enable prettier: install prettier to format code conforming to rules
  ◉ Enable mocha: install mocha to run tests
  ◉ Enable loopbackBuild: use @loopback/build helpers (e.g. lb-eslint)
+ ◉ Enable editorconfig: add EditorConfig files
  ◉ Enable vscode: add VSCode config files
  ◉ Enable docker: include Dockerfile and .dockerignore
  ◉ Enable repositories: include repository imports and RepositoryMixin

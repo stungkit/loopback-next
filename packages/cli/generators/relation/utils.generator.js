@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -81,7 +81,7 @@ exports.addExportController = async function (
     for (const declarations of exportedDeclarations.values()) {
       for (const declaration of declarations) {
         if (
-          ast.TypeGuards.isClassDeclaration(declaration) &&
+          ast.Node.isClassDeclaration(declaration) &&
           controllerClassName === declaration.getName()
         ) {
           return;
@@ -209,17 +209,20 @@ exports.addRequiredImports = function (sourceFile, imports) {
   }
 };
 
-exports.getRequiredImports = function (targetModel, relationType) {
-  return [
-    {
-      name: targetModel,
-      module: './' + utils.toFileName(targetModel) + '.model',
-    },
+exports.getRequiredImports = function (targetModel, relationType, sourceModel) {
+  const requiredImports = [
     {
       name: relationType,
       module: '@loopback/repository',
     },
   ];
+  if (sourceModel !== targetModel) {
+    requiredImports.push({
+      name: targetModel,
+      module: './' + utils.toFileName(targetModel) + '.model',
+    });
+  }
+  return requiredImports;
 };
 
 exports.addCurrentImport = function (sourceFile, currentImport) {

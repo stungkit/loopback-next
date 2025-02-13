@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -95,7 +95,7 @@ export async function testCoercion<T>(config: TestArgs<T>) {
     if (config.expectError) {
       await expect(
         parseOperationArgs(req, route, requestBodyParser),
-      ).to.be.rejectedWith(config.expectedResult);
+      ).to.be.rejectedWith(config.expectedResult as string | RegExp);
     } else {
       const args = await parseOperationArgs(req, route, requestBodyParser);
       expect(args).to.eql([config.expectedResult]);

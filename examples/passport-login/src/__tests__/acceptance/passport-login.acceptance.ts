@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-passport-login
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -11,10 +11,10 @@ import * as url from 'url';
 import {startApplication} from '../../';
 import {User, UserIdentity} from '../../models';
 import {ExpressServer} from '../../server';
-const oauth2Providers = require(path.resolve(
-  __dirname,
-  '../../../data/oauth2-test-provider',
-));
+
+const oauth2Providers = require(
+  path.resolve(__dirname, '../../../data/oauth2-test-provider'),
+);
 
 /**
  * Scenarios to test:

@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/benchmark
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -12,7 +12,10 @@ export interface EndpointStats {
 }
 
 export class Autocannon {
-  constructor(protected url: string, protected duration: number) {}
+  constructor(
+    protected url: string,
+    protected duration: number,
+  ) {}
 
   async execute(
     title: string,

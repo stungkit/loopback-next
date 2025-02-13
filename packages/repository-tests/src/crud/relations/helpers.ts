@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository-tests
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -201,11 +201,18 @@ export function givenBoundCrudRepositories(
   const cartItemRepo: CartItemRepository = new cartItemRepoClass(
     db,
     async () => orderRepo,
+    async () => customerRepo,
+    async () => customerCartItemLinkRepo,
   );
 
   cartItemRepo.inclusionResolvers.set(
     'order',
     cartItemRepo.order.inclusionResolver,
+  );
+
+  cartItemRepo.inclusionResolvers.set(
+    'customers',
+    cartItemRepo.customers.inclusionResolver,
   );
 
   const customerCartItemLinkRepoClass =

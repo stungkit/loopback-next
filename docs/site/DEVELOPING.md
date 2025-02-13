@@ -453,6 +453,10 @@ LoopBack 4 content only. This provides the fastest feedback loop possible, at
 the cost of occasional breakage when the script is not updated to accommodate
 changes made in the `loopback.io` repository.
 
+Building the preview site will need Jekyll installed on your system which
+requires a proper Ruby development environment, follow the installation steps
+here for your OS: https://jekyllrb.com/docs/installation/#guides.
+
 As the initial setup, run the following command once, before you start making
 documentation changes:
 
@@ -679,12 +683,12 @@ to preserve backward compatibility.
 However, we do recognize that often a breaking change is the most sensible thing
 to do. When that time comes:
 
-- Describe incompatibilites for release notes
+- Describe incompatibilities for release notes
 - Look for more breaking changes to include in the release: search for comments
   containing `TODO(semver-major)` and `@deprecated`.
 - Update list of supported versions
 
-### Describe incompatibilites for release notes
+### Describe incompatibilities for release notes
 
 In the pull request introducing the breaking change, provide a descriptive
 [footer](#footer-optional) explaining the breaking change to our users. This

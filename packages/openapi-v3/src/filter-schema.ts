@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -30,9 +30,8 @@ export function getFilterSchemaFor(
   const jsonSchema = getFilterJsonSchemaFor(modelCtor, options);
   const schema = jsonToSchemaObject(jsonSchema);
   if (isSchemaObject(schema)) {
-    schema[
-      'x-typescript-type'
-    ] = `@loopback/repository#Filter<${modelCtor.name}>`;
+    schema['x-typescript-type'] =
+      `@loopback/repository#Filter<${modelCtor.name}>`;
   }
   return schema;
 }
@@ -50,9 +49,8 @@ export function getWhereSchemaFor(modelCtor: typeof Model): SchemaObject {
   const jsonSchema = getWhereJsonSchemaFor(modelCtor);
   const schema = jsonToSchemaObject(jsonSchema);
   if (isSchemaObject(schema)) {
-    schema[
-      'x-typescript-type'
-    ] = `@loopback/repository#Where<${modelCtor.name}>`;
+    schema['x-typescript-type'] =
+      `@loopback/repository#Where<${modelCtor.name}>`;
   }
   return schema;
 }

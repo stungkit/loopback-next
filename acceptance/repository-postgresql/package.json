@@ -1,20 +1,20 @@
 {
   "name": "@loopback/test-repository-postgresql",
   "description": "Acceptance tests for `@loopback/repository` + `loopback-connector-postgresql`",
-  "version": "3.1.2",
+  "version": "6.0.11",
   "private": true,
   "license": "MIT",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "author": "IBM Corp.",
-  "copyright.owner": "IBM Corp.",
+  "author": "IBM Corp. and LoopBack contributors",
+  "copyright.owner": "IBM Corp. and LoopBack contributors",
   "repository": {
     "type": "git",
     "url": "https://github.com/loopbackio/loopback-next.git",
     "directory": "acceptance/repository-postgresql"
   },
   "engines": {
-    "node": "12 || 14 || 16 || 17"
+    "node": "18 || 20 || 22"
   },
   "scripts": {
     "build": "lb-tsc",
@@ -31,13 +31,13 @@
     "!*/__tests__"
   ],
   "devDependencies": {
-    "@loopback/build": "^8.1.2",
-    "@loopback/eslint-config": "^12.0.4",
-    "@loopback/repository": "^4.1.2",
-    "@loopback/repository-tests": "^0.20.2",
-    "@loopback/testlab": "^4.1.2",
-    "@types/node": "^12.20.47",
-    "loopback-connector-postgresql": "^5.5.0",
-    "tslib": "^2.3.1"
+    "@loopback/build": "^11.0.10",
+    "@loopback/eslint-config": "^15.0.5",
+    "@loopback/repository": "^7.0.11",
+    "@loopback/repository-tests": "^0.24.11",
+    "@loopback/testlab": "^7.0.10",
+    "@types/node": "^16.18.126",
+    "loopback-connector-postgresql": "^7.1.9",
+    "tslib": "^2.8.1"
   }
 }

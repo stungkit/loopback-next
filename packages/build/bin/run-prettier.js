@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Copyright IBM Corp. 2017,2018. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2018. All Rights Reserved.
 // Node module: @loopback/build
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -34,7 +34,7 @@ function run(argv, options) {
   }
   args.push(...prettierOpts);
 
-  return utils.runCLI('prettier/bin-prettier', args, options);
+  return utils.runCLI('prettier/bin/prettier.cjs', args, options);
 }
 
 module.exports = run;

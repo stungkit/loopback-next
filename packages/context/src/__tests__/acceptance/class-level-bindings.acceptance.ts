@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/context
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -709,8 +709,7 @@ describe('Context bindings - Injecting dependencies of classes', () => {
     const store = await ctx.get<Store>(STORE_KEY);
     expect(store.locations).to.eql(['San Francisco', 'San Jose']);
     expect(resolutionPath).to.eql(
-      'store --> @Store.constructor[0] --> store.locations.sj --> ' +
-        '@LocationProvider.prototype.location',
+      'store.locations.sj --> @LocationProvider.prototype.location',
     );
   });
 

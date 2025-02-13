@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/pooling
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -214,8 +214,9 @@ describe('Resource pool', () => {
     const reqCtx = new Context(ctx, 'req');
     const res = await poolService.acquire();
     reqCtx.once('close', () => {
-      // eslint-disable-next-line @typescript-eslint/no-floating-promises
-      poolService.release(res);
+      poolService.release(res).catch(err => {
+        throw err;
+      });
     });
     const requestClosed = once(reqCtx, 'close');
     reqCtx.close();

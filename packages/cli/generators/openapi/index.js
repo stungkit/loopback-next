@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -292,12 +292,13 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     });
   }
 
-  _generateControllers() {
+  _generateControllers(withImplementation) {
     const source = this.templatePath(
       'src/controllers/controller-template.ts.ejs',
     );
     for (const c of this.selectedControllers) {
       const controllerFile = c.fileName;
+      c.withImplementation = withImplementation;
       if (debug.enabled) {
         debug(`Artifact output filename set to: ${controllerFile}`);
       }
@@ -478,7 +479,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     this._generateModels();
     await this._updateIndex(MODEL);
     if (this.options.server !== false) {
-      this._generateControllers();
+      this._generateControllers(this.options.client);
       await this._updateIndex(CONTROLLER);
     }
     if (this.options.client === true) {
@@ -495,7 +496,7 @@ module.exports = class OpenApiGenerator extends BaseGenerator {
     if (this.shouldExit()) return false;
     debug('install npm dependencies');
     const pkgJson = this.packageJson || {};
-    const deps = pkgJson.dependencies || {};
+    const deps = pkgJson.get('dependencies') || {};
     const pkgs = [];
     const connectorVersionRange = deps['loopback-connector-openapi'];
     if (!connectorVersionRange) {

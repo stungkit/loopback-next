@@ -1,10 +1,11 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 'use strict';
 
+const _ = require('lodash');
 const Generator = require('yeoman-generator');
 const chalk = require('chalk');
 const {StatusConflicter, readTextFromStdin} = require('./utils');
@@ -14,6 +15,8 @@ const debug = require('./debug')('base-generator');
 const updateIndex = require('./update-index');
 const {checkLoopBackProject} = require('./version-helper');
 const g = require('./globalize');
+
+_.extend(Generator.prototype, require('yeoman-generator/lib/actions/install'));
 
 const supportedPackageManagers = ['npm', 'yarn'];
 
@@ -47,10 +50,9 @@ module.exports = class BaseGenerator extends Generator {
   constructor(args, opts) {
     super(args, opts);
     debug('Initializing generator', this.constructor.name);
-    this.conflicter = new StatusConflicter(
-      this.env.adapter,
-      this.options.force,
-    );
+    this.conflicter = new StatusConflicter(this.env.adapter, {
+      force: this.options.force,
+    });
     this._setupGenerator();
   }
 
@@ -194,7 +196,7 @@ module.exports = class BaseGenerator extends Generator {
       return;
     }
     for (const o in opts) {
-      if (this.options[o] == null) {
+      if (!this.options[o]) {
         this.options[o] = opts[o];
       }
     }
@@ -459,6 +461,7 @@ module.exports = class BaseGenerator extends Generator {
         );
       }
     }
+    process.exit(0);
   }
 
   /**
@@ -479,14 +482,15 @@ module.exports = class BaseGenerator extends Generator {
 
   // Check all files being generated to ensure they succeeded
   _isGenerationSuccessful() {
-    const generationStatus = !!Object.entries(
-      this.conflicter.generationStatus,
-    ).find(([key, val]) => {
-      // If a file was modified, update the indexes and say stuff about it
-      return val !== 'skip' && val !== 'identical';
-    });
-    debug(`Generation status: ${generationStatus}`);
-    return generationStatus;
+    // const generationStatus = !!Object.entries(
+    //   this.conflicter.generationStatus,
+    // ).find(([key, val]) => {
+    //   // If a file was modified, update the indexes and say stuff about it
+    //   return val !== 'skip' && val !== 'identical';
+    // });
+    // debug(`Generation status: ${generationStatus}`);
+    // return generationStatus;
+    return true; // FixMe: Conflicter does not work
   }
 
   async _updateIndexFile(dir, file) {

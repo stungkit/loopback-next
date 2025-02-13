@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/filter
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -39,7 +39,9 @@ export type Operators =
   | 'nlike' // NOT LIKE
   | 'ilike' // ILIKE'
   | 'nilike' // NOT ILIKE
-  | 'regexp'; // REGEXP'
+  | 'regexp' // REGEXP'
+  | 'match' // match
+  | 'contains'; // for array
 
 /**
  * Matching predicate comparison
@@ -186,7 +188,7 @@ export interface Inclusion {
   scope?: Filter<AnyObject> & {
     /**
      * Global maximum number of inclusions. This is just to remain backward
-     * compatability. This totalLimit props takes precedence over limit
+     * compatibility. This totalLimit props takes precedence over limit
      * https://github.com/loopbackio/loopback-next/issues/6832
      */
     totalLimit?: number;
@@ -341,7 +343,7 @@ export class WhereBuilder<MT extends object = AnyObject> {
    */
   eq<K extends KeyOf<MT>>(key: K, val: MT[K]): this {
     const w: Where<MT> = {};
-    w[key] = val;
+    w[key] = val as ShortHandEqualType & MT[K];
     return this.add(w);
   }
 

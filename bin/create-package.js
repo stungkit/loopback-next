@@ -32,20 +32,22 @@
  * 4. Run `lb4 copyright` to update `LICENSE` and copyright headers for `*.ts`
  * and `*.js`.
  *
- * 5. Run `lerna bootstrap --scope <full-package-name>` to link its local
+ * 5. Run `npm install --workspace <full-package-name>` to link its local
  * dependencies.
  *
  * 6. Run `update-ts-project-refs` to update TypeScript project references
+ * (via NPM `postinstall` hook)
  *
  * 7. Remind to update `CODEOWNERS` and `docs/site/MONOREPO.md`
  */
 'use strict';
 
+const path = require('node:path');
+const fse = require('fs-extra');
 const build = require('../packages/build');
-const path = require('path');
+const {runMain} = require('./script-util');
+
 const cwd = process.cwd();
-const fs = require('fs-extra');
-const {runMain, updateTsProjectRefs} = require('../packages/monorepo');
 
 /**
  * Return a promise to be resolved by the child process exit event
@@ -114,7 +116,6 @@ async function createPackage(name) {
   await fixupProject(project);
   await updateCopyrightAndLicense(project, options);
   await bootstrapProject(project);
-  await updateTsProjectRefs({dryRun: false});
 
   promptActions(project);
 }
@@ -151,8 +152,8 @@ async function bootstrapProject({repoRoot, name}) {
   process.chdir(repoRoot);
   // Run `npx lerna bootstrap --scope @loopback/<name>`
   const shell = build.runShell(
-    'npx',
-    ['lerna', 'bootstrap', '--scope', `@loopback/${name}`],
+    'npm',
+    ['install', '--workspace', `@loopback/${name}`],
     {
       cwd: repoRoot,
     },
@@ -163,7 +164,7 @@ async function bootstrapProject({repoRoot, name}) {
 async function fixupProject({repoRoot, projectDir}) {
   process.chdir(path.join(repoRoot, projectDir));
   // Update package.json
-  let pkg = fs.readJsonSync('package.json');
+  let pkg = fse.readJsonSync('package.json');
   pkg = {
     ...pkg,
     version: '0.0.1',
@@ -184,7 +185,7 @@ async function fixupProject({repoRoot, projectDir}) {
   delete pkg.dependencies['@loopback/boot'];
   delete pkg.devDependencies['source-map-support'];
 
-  fs.writeJsonSync('package.json', pkg, {spaces: 2});
+  fse.writeJsonSync('package.json', pkg, {spaces: 2});
 
   // Remove unused files
   build.clean([

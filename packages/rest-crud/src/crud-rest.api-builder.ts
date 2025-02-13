@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/rest-crud
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -31,6 +31,10 @@ const debug = debugFactory('loopback:boot:crud-rest');
 export interface ModelCrudRestApiConfig extends ModelApiConfig {
   // E.g. '/products'
   basePath: string;
+  /**
+   * If true, the generated controller only has find and count APIs
+   */
+  readonly?: boolean;
 }
 
 @injectable(asModelApiBuilder)

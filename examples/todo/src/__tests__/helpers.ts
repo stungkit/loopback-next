@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/example-todo
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -48,7 +48,7 @@ export function givenTodo(todo?: Partial<Todo>) {
 
 export const aLocation = {
   address: '1 New Orchard Road, Armonk, 10504',
-  geopoint: <GeoPoint>{y: 41.109657, x: -73.72466},
+  geopoint: <GeoPoint>{y: 41.109728357749, x: -73.72462031805},
   get geostring() {
     return `${this.geopoint.y},${this.geopoint.x}`;
   },

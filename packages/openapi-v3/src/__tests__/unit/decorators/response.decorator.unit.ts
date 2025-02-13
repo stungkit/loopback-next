@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -147,6 +147,7 @@ describe('@oas.response decorator', () => {
         actualSpec.components?.schemas?.SuccessModel,
       ).to.not.be.undefined();
     });
+
     it('supports multiple @oas.response decorators with an array of models', () => {
       class MyController {
         @get('/greet')

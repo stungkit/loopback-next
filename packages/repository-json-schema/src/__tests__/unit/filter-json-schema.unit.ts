@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -260,6 +260,19 @@ describe('getFilterJsonSchemaFor', () => {
       .to.equal('Customer.IncludeFilter');
   });
 
+  it('enumerates relations under relation object', () => {
+    expect(customerFilterSchema.properties)
+      .to.have.propertyByPath(
+        'include',
+        'items',
+        'anyOf',
+        '0',
+        'properties',
+        'relation',
+        'enum',
+      )
+      .containDeep(['orders']);
+  });
   it('returns "include.items.title" when no options were provided', () => {
     expect(customerFilterSchema.properties)
       .to.have.propertyByPath('include', 'items', 'anyOf', '0', 'title')

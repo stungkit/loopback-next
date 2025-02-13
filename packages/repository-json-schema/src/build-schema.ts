@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/repository-json-schema
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -226,6 +226,7 @@ export function stringTypeToWrapper(type: string | Function): Function {
       wrapper = Date;
       break;
     }
+    case 'binary':
     case 'buffer': {
       wrapper = Buffer;
       break;
@@ -278,6 +279,16 @@ export function metaToJsonProperty(meta: PropertyDefinition): JsonSchema {
     Object.assign(propDef, {
       type: 'string',
       format: 'date-time',
+    });
+  } else if (propertyType === 'buffer') {
+    Object.assign(propDef, {
+      type: 'string',
+      format: 'buffer',
+    });
+  } else if (propertyType === 'Binary') {
+    Object.assign(propDef, {
+      type: 'string',
+      format: 'binary',
     });
   } else if (propertyType === 'any') {
     // no-op, the json schema for any type is {}
@@ -397,11 +408,11 @@ function getDescriptionSuffix<T extends object>(
     tsType = `Partial<${tsType}>`;
   }
   if (options.exclude) {
-    const excludedProps = options.exclude.map(p => `'${p}'`);
+    const excludedProps = options.exclude.map(p => `'${String(p)}'`);
     tsType = `Omit<${tsType}, ${excludedProps.join(' | ')}>`;
   }
   if (options.optional) {
-    const optionalProps = options.optional.map(p => `'${p}'`);
+    const optionalProps = options.optional.map(p => `'${String(p)}'`);
     tsType = `@loopback/repository-json-schema#Optional<${tsType}, ${optionalProps.join(
       ' | ',
     )}>`;
@@ -502,7 +513,9 @@ export function modelToJsonSchema<T extends object>(
     const referenceType = isArrayType(resolvedType)
       ? // shimks: ugly type casting; this should be replaced by logic to throw
         // error if itemType/type is not a string or a function
-        resolveType(metaProperty.itemType as string | Function)
+        typeof metaProperty.itemType === 'string'
+        ? resolveType(metaProperty.itemType)
+        : resolveType(metaProperty.itemType)
       : resolvedType;
 
     if (typeof referenceType !== 'function' || isBuiltinType(referenceType)) {
@@ -564,6 +577,11 @@ export function modelToJsonSchema<T extends object>(
 
       result.properties[relMeta.name] =
         result.properties[relMeta.name] || propDef;
+      if ((relMeta as {keyFrom: string}).keyFrom) {
+        result.properties.foreignKey = (relMeta as {keyFrom: string})
+          .keyFrom as JsonSchema;
+      }
+
       includeReferencedSchema(targetSchema.title!, targetSchema);
     }
   }

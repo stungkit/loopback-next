@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/openapi-v3
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -127,7 +127,7 @@ export namespace requestBody {
    * export class MyController {
    *   @post('/greet')
    *   greet(@requestBody.array(
-   *     {schema: {type: 'string'}},
+   *     {type: 'string'},
    *     {description: 'an array of names', required: false}
    *   ) names: string[]): string {
    *     return `Hello, ${names}`;

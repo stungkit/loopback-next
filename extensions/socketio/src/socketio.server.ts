@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/socketio
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -25,10 +25,10 @@ import {cloneDeep} from 'lodash';
 import {Server, ServerOptions, Socket} from 'socket.io';
 import {
   getSocketIoMetadata,
-  SocketIoMetadata,
   SOCKET_IO_CONNECT_METADATA,
   SOCKET_IO_METADATA,
   SOCKET_IO_SUBSCRIBE_METADATA,
+  SocketIoMetadata,
 } from './decorators';
 import {SocketIoBindings, SocketIoTags} from './keys';
 import {SocketIoControllerFactory} from './socketio-controller-factory';
@@ -152,9 +152,9 @@ export class SocketIoServer extends Context {
       this.app.bind(getNamespaceKeyForName(meta.name)).to(nsp);
     }
 
-    nsp.on('connection', socket =>
-      this.createSocketHandler(controllerClass)(socket),
-    );
+    nsp.on('connection', async socket => {
+      await this.createSocketHandler(controllerClass)(socket);
+    });
     return nsp;
   }
 
@@ -164,7 +164,7 @@ export class SocketIoServer extends Context {
    */
   private createSocketHandler(
     controllerClass: Constructor<object>,
-  ): (socket: Socket) => void {
+  ): (socket: Socket) => Promise<void> {
     return async socket => {
       debug(
         'SocketIo connected: id=%s namespace=%s',
@@ -236,9 +236,11 @@ export class SocketIoServer extends Context {
    */
   async stop() {
     const closePromise = new Promise<void>((resolve, _reject) => {
-      this.io.close(() => {
-        resolve();
-      });
+      this.io
+        .close(() => {
+          resolve();
+        })
+        .catch(err => {});
     });
     await closePromise;
     if (this.httpServer) await this.httpServer.stop();

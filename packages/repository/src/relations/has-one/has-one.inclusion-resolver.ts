@@ -1,10 +1,9 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/repository
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
 
 import {Filter, InclusionFilter} from '@loopback/filter';
-import {cloneDeep} from 'lodash';
 import {includeFieldIfNot, InvalidPolymorphismError} from '../../';
 import {AnyObject, Options} from '../../common-types';
 import {Entity} from '../../model';
@@ -113,7 +112,7 @@ export function createHasOneInclusionResolver<
         targetKey,
         sourceIdsCategorized[k],
         scope,
-        Object.assign(cloneDeep(options ?? {}), {polymorphicType: k}),
+        {...options, polymorphicType: k},
       );
       targetCategorized[k] = flattenTargetsOfOneToOneRelation(
         sourceIdsCategorized[k],

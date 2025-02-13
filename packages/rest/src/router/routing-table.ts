@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -40,7 +40,7 @@ export class RoutingTable {
    * @param controllerCtor
    * @param controllerFactory
    */
-  registerController<T>(
+  registerController<T extends object>(
     spec: ControllerSpec,
     controllerCtor: ControllerClass<T>,
     controllerFactory?: ControllerFactory<T>,

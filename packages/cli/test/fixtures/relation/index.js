@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2019,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2019,2020. All Rights Reserved.
 // Node module: @loopback/cli
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -147,6 +147,41 @@ const SourceEntries = {
     file: 'doctor-patient.controller.ts',
     content: readSourceFile('./controllers/doctor-patient.controller.ts'),
   },
+  EmployeeModel: {
+    path: MODEL_APP_PATH,
+    file: 'employee.model.ts',
+    content: readSourceFile('./models/employee.model.ts'),
+  },
+  EmployeeRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'employee.repository.ts',
+    content: readSourceFile('./repositories/employee.repository.ts'),
+  },
+  EmployeeController: {
+    path: CONTROLLER_PATH,
+    file: 'employee.controller.ts',
+    content: readSourceFile('./controllers/employee.controller.ts'),
+  },
+  UserModel: {
+    path: MODEL_APP_PATH,
+    file: 'user.model.ts',
+    content: readSourceFile('./models/user.model.ts'),
+  },
+  FriendModel: {
+    path: MODEL_APP_PATH,
+    file: 'friend.model.ts',
+    content: readSourceFile('./models/friend.model.ts'),
+  },
+  UserRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'user.repository.ts',
+    content: readSourceFile('./repositories/user.repository.ts'),
+  },
+  FriendRepository: {
+    path: REPOSITORY_APP_PATH,
+    file: 'friend.repository.ts',
+    content: readSourceFile('./repositories/friend.repository.ts'),
+  },
 };
 exports.SourceEntries = SourceEntries;
 
@@ -198,6 +233,7 @@ exports.SANDBOX_FILES = [
   SourceEntries.DoctorRepository,
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
+  SourceEntries.EmployeeRepository,
 
   SourceEntries.AccountModel,
   SourceEntries.CustomerModel,
@@ -208,6 +244,12 @@ exports.SANDBOX_FILES = [
   SourceEntries.PatientModel,
   SourceEntries.AppointmentModel,
   SourceEntries.DoctorPatientController,
+  SourceEntries.EmployeeModel,
+  SourceEntries.EmployeeController,
+  SourceEntries.UserModel,
+  SourceEntries.FriendModel,
+  SourceEntries.UserRepository,
+  SourceEntries.FriendRepository,
 ];
 
 exports.SANDBOX_FILES2 = [
@@ -219,6 +261,7 @@ exports.SANDBOX_FILES2 = [
   SourceEntries.DoctorRepository,
   SourceEntries.PatientRepository,
   SourceEntries.AppointmentRepository,
+  SourceEntries.EmployeeRepository,
 
   SourceEntries.CustomerModel,
   SourceEntries.CustomerModelWithInheritance,

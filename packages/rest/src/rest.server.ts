@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/rest
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -280,7 +280,8 @@ export class RestServer
 
     // Mount our router & request handler
     this._expressApp.use(this._basePath, (req, res, next) => {
-      this._handleHttpRequest(req, res).catch(next);
+      // eslint-disable-next-line no-void
+      void this._handleHttpRequest(req, res).catch(next);
     });
 
     // Mount our error handler
@@ -452,7 +453,9 @@ export class RestServer
       if (apiSpec.components) {
         this._httpHandler.registerApiComponents(apiSpec.components);
       }
-      const controllerFactory = createControllerFactoryForBinding(b.key);
+      const controllerFactory = createControllerFactoryForBinding<object>(
+        b.key,
+      );
       const routes = createRoutesForController(
         apiSpec,
         ctor,
@@ -517,12 +520,14 @@ export class RestServer
         );
       }
 
-      const controllerFactory = createControllerFactoryForBinding(b.key);
+      const controllerFactory = createControllerFactoryForBinding<object>(
+        b.key,
+      );
       const route = new ControllerRoute(
         verb,
         path,
         spec,
-        ctor,
+        ctor as ControllerClass<object>,
         controllerFactory,
       );
       this._httpHandler.registerRoute(route);
@@ -629,7 +634,7 @@ export class RestServer
    * @param controllerFactory - A factory function to create controller instance
    * @param methodName - The name of the controller method
    */
-  route<I>(
+  route<I extends object>(
     verb: string,
     path: string,
     spec: OperationObject,
@@ -678,7 +683,7 @@ export class RestServer
    */
   route(route: RouteEntry): Binding;
 
-  route<T>(
+  route<T extends object>(
     routeOrVerb: RouteEntry | string,
     path?: string,
     spec?: OperationObject,

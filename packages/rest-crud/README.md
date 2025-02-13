@@ -43,7 +43,7 @@ export class TryApplication extends BootMixin(
 
 Create a new file for the configuration, e.g.
 `src/model-endpoints/product.rest-config.ts` that defines the `model`,
-`pattern`, `dataSource`, and `basePath` properties:
+`pattern`, `dataSource`, `basePath`, and `readonly` properties:
 
 ```ts
 import {ModelCrudRestApiConfig} from '@loopback/rest-crud';
@@ -54,6 +54,7 @@ module.exports = <ModelCrudRestApiConfig>{
   pattern: 'CrudRest', // make sure to use this pattern
   dataSource: 'db',
   basePath: '/products',
+  readonly: false,
 };
 ```
 
@@ -74,7 +75,7 @@ For the examples in the following sections, we are also assuming a model named
 ### Creating a CRUD Controller
 
 Here is how you would use `defineCrudRestController` for exposing the CRUD
-endpoints of an existing model with a respository.
+endpoints of an existing model with a repository.
 
 1. Create a REST CRUD controller class for your model.
 

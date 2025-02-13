@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2018,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2018,2020. All Rights Reserved.
 // Node module: @loopback/http-server
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -116,7 +116,9 @@ export class HttpServer {
       // Remove `port` so that `path` is honored
       delete this.serverOptions.port;
     }
-    this._protocol = serverOptions ? serverOptions.protocol ?? 'http' : 'http';
+    this._protocol = serverOptions
+      ? (serverOptions.protocol ?? 'http')
+      : 'http';
     if (this._protocol === 'https') {
       this.server = https.createServer(
         this.serverOptions as https.ServerOptions,
@@ -231,7 +233,7 @@ export class HttpServer {
       return `${this.protocol}+unix://${basePath}`;
     }
     let host = this.host;
-    if (this._address.family === 'IPv6') {
+    if ([6, 'IPv6'].includes(this._address.family)) {
       if (host === '::') host = '::1';
       host = `[${host}]`;
     } else if (host === '0.0.0.0') {

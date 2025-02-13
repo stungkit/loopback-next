@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2017,2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2017,2020. All Rights Reserved.
 // Node module: @loopback/core
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -121,7 +121,7 @@ export class Application extends Context implements LifeCycleObserver {
     this.scope = BindingScope.APPLICATION;
 
     this.options =
-      configOrParent instanceof Context ? {} : configOrParent ?? {};
+      configOrParent instanceof Context ? {} : (configOrParent ?? {});
 
     // Configure debug
     this._debug = debug;
@@ -470,6 +470,11 @@ export class Application extends Context implements LifeCycleObserver {
       defaultScope: BindingScope.SINGLETON,
       ...toOptions(nameOrOptions),
     });
+    // Check if the component is already bound
+    const found = this.registry.get(binding.key);
+    if (found?.valueConstructor === binding.valueConstructor) {
+      return binding;
+    }
     if (isLifeCycleObserverClass(componentCtor)) {
       binding.apply(asLifeCycleObserver);
     }

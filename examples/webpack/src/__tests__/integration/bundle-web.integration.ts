@@ -1,4 +1,4 @@
-// Copyright IBM Corp. 2020. All Rights Reserved.
+// Copyright IBM Corp. and LoopBack contributors 2020. All Rights Reserved.
 // Node module: @loopback/example-webpack
 // This file is licensed under the MIT License.
 // License text available at https://opensource.org/licenses/MIT
@@ -40,7 +40,10 @@ skipIf<[(this: Suite) => void], void>(
     let html: string;
     before(async function (this: Mocha.Context) {
       this.timeout(15000);
-      browser = await puppeteer.launch();
+      browser = await puppeteer.launch({
+        headless: 'new',
+        args: ['--no-sandbox'],
+      });
       const page = await browser.newPage();
       await page.goto(
         url
