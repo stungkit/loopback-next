@@ -1,7 +1,7 @@
 {
   "name": "@loopback/authentication-passport",
   "description": "A package creating adapters between the passport module and @loopback/authentication",
-  "version": "7.0.12",
+  "version": "7.0.14",
   "keywords": [
     "Passport",
     "Authentication",
@@ -18,7 +18,7 @@
     "directory": "extensions/authentication-passport"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": "20 || 22 || 24"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -45,28 +45,28 @@
     "@loopback/rest": "^14.0.0"
   },
   "dependencies": {
-    "@loopback/security": "^0.11.12",
+    "@loopback/security": "^0.11.14",
     "passport": "^0.6.0",
     "tslib": "^2.8.1",
     "util-promisifyall": "^1.0.6"
   },
   "devDependencies": {
-    "@loopback/authentication": "^11.0.12",
-    "@loopback/build": "^11.0.10",
-    "@loopback/core": "^6.1.9",
+    "@loopback/authentication": "^11.0.14",
+    "@loopback/build": "^11.0.12",
+    "@loopback/core": "^6.1.11",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/mock-oauth2-provider": "^0.9.12",
-    "@loopback/openapi-spec-builder": "^7.0.11",
-    "@loopback/rest": "^14.0.12",
-    "@loopback/testlab": "^7.0.11",
+    "@loopback/mock-oauth2-provider": "^0.9.14",
+    "@loopback/openapi-spec-builder": "^7.0.13",
+    "@loopback/rest": "^14.0.14",
+    "@loopback/testlab": "^7.0.13",
     "@types/jsonwebtoken": "^9.0.9",
-    "@types/lodash": "^4.17.16",
+    "@types/lodash": "^4.17.17",
     "@types/node": "^16.18.126",
     "@types/passport": "^1.0.17",
     "@types/passport-http": "^0.3.11",
     "@types/passport-oauth2": "^1.4.17",
-    "@types/qs": "^6.9.18",
-    "axios": "^1.8.4",
+    "@types/qs": "^6.14.0",
+    "axios": "^1.9.0",
     "body-parser": "^2.2.0",
     "express": "^4.21.2",
     "form-data": "^4.0.2",
@@ -75,6 +75,6 @@
     "passport-http": "^0.3.0",
     "passport-oauth2": "^1.8.0",
     "qs": "^6.14.0",
-    "supertest": "^7.1.0"
+    "supertest": "^7.1.1"
   }
 }

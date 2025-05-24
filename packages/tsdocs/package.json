@@ -1,7 +1,7 @@
 {
   "name": "@loopback/tsdocs",
   "description": "A package to generate api docs using Microsoft api-extractor and api-documenter",
-  "version": "6.0.12",
+  "version": "6.0.14",
   "keywords": [
     "LoopBack",
     "Apidocs",
@@ -23,7 +23,7 @@
     "directory": "packages/tsdocs"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": "20 || 22 || 24"
   },
   "scripts": {
     "build:tsdocs": "npm run build && npm run -s extract-apidocs && npm run -s document-apidocs && npm run -s update-apidocs",
@@ -52,16 +52,16 @@
     "@microsoft/api-documenter": "^7.23.37",
     "@microsoft/api-extractor": "^7.42.3",
     "@npmcli/map-workspaces": "^4.0.2",
-    "@npmcli/package-json": "^6.1.1",
-    "debug": "^4.4.0",
+    "@npmcli/package-json": "^6.2.0",
+    "debug": "^4.4.1",
     "fs-extra": "^11.3.0",
     "tslib": "^2.8.1"
   },
   "devDependencies": {
-    "@loopback/build": "^11.0.10",
+    "@loopback/build": "^11.0.12",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/testlab": "^7.0.11",
-    "@loopback/tsdocs-monorepo": "^0.5.10",
+    "@loopback/testlab": "^7.0.13",
+    "@loopback/tsdocs-monorepo": "^0.5.12",
     "@types/debug": "^4.1.12",
     "@types/fs-extra": "^11.0.4",
     "@types/node": "^16.18.126",

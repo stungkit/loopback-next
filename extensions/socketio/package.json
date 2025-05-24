@@ -1,7 +1,7 @@
 {
   "name": "@loopback/socketio",
   "description": "LoopBack's WebSocket server based on socket.io",
-  "version": "0.8.12",
+  "version": "0.8.14",
   "keywords": [
     "LoopBack",
     "Socket.IO",
@@ -21,7 +21,7 @@
     "directory": "extensions/socketio"
   },
   "engines": {
-    "node": "18 || 20 || 22"
+    "node": "20 || 22 || 24"
   },
   "scripts": {
     "acceptance": "lb-mocha \"dist/__tests__/acceptance/**/*.js\"",
@@ -46,20 +46,20 @@
     "@loopback/core": "^6.0.0"
   },
   "dependencies": {
-    "@loopback/http-server": "^6.0.12",
-    "@types/cors": "^2.8.17",
-    "@types/lodash": "^4.17.16",
+    "@loopback/http-server": "^6.0.14",
+    "@types/cors": "^2.8.18",
+    "@types/lodash": "^4.17.17",
     "cors": "^2.8.5",
-    "debug": "^4.4.0",
+    "debug": "^4.4.1",
     "lodash": "^4.17.21",
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "@loopback/boot": "^7.0.12",
-    "@loopback/build": "^11.0.10",
-    "@loopback/core": "^6.1.9",
+    "@loopback/boot": "^7.0.14",
+    "@loopback/build": "^11.0.12",
+    "@loopback/core": "^6.1.11",
     "@loopback/eslint-config": "^15.0.5",
-    "@loopback/testlab": "^7.0.11",
+    "@loopback/testlab": "^7.0.13",
     "@types/debug": "^4.1.12",
     "p-event": "^4.2.0",
     "socket.io-client": "^4.8.1"
